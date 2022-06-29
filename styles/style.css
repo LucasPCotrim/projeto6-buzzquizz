@@ -103,6 +103,12 @@ header img {
     flex-wrap: wrap;
     gap: 12px;
 }
+
+.my_quiz_gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
 .quiz {
     position: relative;
     width: 340px;
@@ -110,6 +116,11 @@ header img {
     cursor: pointer;
     border-radius: 5px;
 }
+.quiz_image img{
+    width: 340px;
+    height: 181px;
+}
+
 .quiz_image:after {
     content: '';
     position: absolute;
