@@ -13,12 +13,13 @@
         <img src="imgs/logo.png" alt="Buzzquizz logo">
     </header>
     <div class="page_content">
-        <div class="tela_1">
-            <div class="empty_quiz_container">
+
+        <div class="tela_1 hidden">
+            <section class="empty_quiz_container">
                 <h1>Você não criou nenhum quizz ainda :(</h1>
                 <button>Criar Quizz</button>
-            </div>
-            <div class="quiz_container">
+            </section>
+            <section class="quiz_container">
                 <h1>Seus Quizzes</h1>
                 <div class="quiz_gallery">
                     <div class="quiz">
@@ -34,8 +35,8 @@
                         <h1>É ex-BBB ou ex-De férias com o ex?</h1>
                     </div>
                 </div>
-            </div>
-            <div class="quiz_container">
+            </section>
+            <section class="quiz_container">
                 <h1>Todos os Quizzes</h1>
                 <div class="quiz_gallery">
                     <div class="quiz">
@@ -75,7 +76,79 @@
                         <h1>O quanto você é de boas?</h1>
                     </div>
                 </div>
+            </section>
+        </div>
+
+        <div class="tela_2">
+            <div class="quiz_title">
+                <div class="quiz_title_image">
+                    <img src="imgs/harry_potter.png" alt="harry_potter image">
+                </div>
+                <h1>O quão Potterhead é você?</h1>
             </div>
+            <div class="questions_container">
+                <div class="question">
+                    <div class="question_title">
+                        <h1>Em qual animal olho tonto transfigurou Malfoy?</h1>
+                    </div>
+                    <div class="question_alternatives">
+                        <div class="alternative">
+                            <img src="imgs/q1a1.png">
+                            <h2>Gatíneo</h2>
+                        </div>
+                        <div class="alternative">
+                            <img src="imgs/q1a2.png">
+                            <h2>Ratata</h2>
+                        </div>
+                        <div class="alternative">
+                            <img src="imgs/q1a3.png">
+                            <h2>Sapo gordo</h2>
+                        </div>
+                        <div class="alternative">
+                            <img src="imgs/q1a4.png">
+                            <h2>Mustela putorius (o Furão)</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="question">
+                    <div class="question_title">
+                        <h1>Qual dos objetos abaixo NÃO é uma horcrux?</h1>
+                    </div>
+                    <div class="question_alternatives">
+                        <div class="alternative">
+                            <img src="imgs/q2a1.png">
+                            <h2>The boy who lived</h2>
+                        </div>
+                        <div class="alternative">
+                            <img src="imgs/q2a2.png">
+                            <h2>O livro monstruoso dos monstros</h2>
+                        </div>
+                        <div class="alternative">
+                            <img src="imgs/q2a3.png">
+                            <h2>Anel velho</h2>
+                        </div>
+                        <div class="alternative">
+                            <img src="imgs/q2a4.png">
+                            <h2>Diadema da Ravenclaw</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="quiz_result">
+                    <div class="title">
+                        <h1>88% de acerto: Você é praticamente um aluno de Hogwarts!</h1>
+                    </div>
+                    <div class="content">
+                        <img src="imgs/quiz_result.png" alt="quiz result">
+                        <p>Parabéns Potterhead! Bem-vindx a Hogwarts, aproveite o loop infinito de comida e clique no botão abaixo para usar o vira-tempo e reiniciar este teste.</p>
+                    </div>
+                </div>
+            </div>
+            <button class="reset_quiz">
+                Reiniciar Quizz
+            </button>
+            <button class="back_home">
+                Voltar para home
+            </button>
         </div>
     </div>
     
