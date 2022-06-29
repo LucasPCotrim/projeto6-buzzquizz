@@ -1,6 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
+body{
+    background-color: #FAFAFA;
+}
+
 header {
+    position: fixed;
+    top: 0;
+    left: 0;
     width: 100vw;
     height: 69px;
     background-color: #EC362D;
@@ -8,12 +15,14 @@ header {
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 1;
 }
 header img {
     width: 176px;
 }
 
 .page_content {
+    margin-top: 69px;
     width: 100vw;
     background-color: #FAFAFA;
     display: flex;
@@ -119,6 +128,7 @@ header img {
 .quiz_image img{
     width: 340px;
     height: 181px;
+    border-radius: 5px;
 }
 
 .quiz_image:after {
@@ -360,6 +370,259 @@ button.back_home {
 
 
 
+/* ------------------------- Tela 3 ------------------------- */
+.tela_3 {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.tela_3a, .tela_3b, .tela_3c, .tela_3d {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.tela_3 h1 {
+    margin-top: 71px;
+    margin-bottom: 27px;
+    height: 27px;
+
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 23px;
+    line-height: 27px;
+    text-align: center;
+    color: #000000;
+}
+
+.tela_3 .form_container {
+    box-sizing: border-box;
+    background-color: #FFFFFF;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
+    width: min(600px, calc(100% - 36px));
+    max-width: calc(100% - 36px);
+    padding-top: 21px;
+    padding-bottom: 24px;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-bottom: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+.tela_3 input{
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    height: 46px;
+    padding-left: 23.16px;
+    border: 1px solid #D1D1D1;
+    border-radius: 5px;
+}
+.tela_3 input::-webkit-outer-spin-button,
+.tela_3 input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.tela_3 input[type=number] {
+    -moz-appearance: textfield;
+}
+.tela_3 input::placeholder {
+    font-family: 'Roboto';
+    font-style: italic;
+    font-weight: 400;
+    font-size: 19px;
+    line-height: 22px;
+    color: #BABABA;
+}
+.tela_3 input:focus{
+    outline: none;
+}
+.tela_3 input:focus::placeholder{
+    opacity: 0;
+}
+.tela_3a input {
+    margin-bottom: 9px;
+}
+
+.tela_3 button {
+    width: 368.86px;
+    height: 54px;
+    background: #EC362D;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+
+    width: 367.72px;
+    height: 54px;
+    margin-top:61px;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 21px;
+    line-height: 25px;
+    text-align: center;
+    color: #FFF5F4;
+}
+.tela_3 h2{
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 23px;
+    margin-top: 27px;
+    color: #000000;
+}
+
+.tela_3 .form_question {
+    box-sizing: border-box;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 14px;
+}
+.tela_3 .form_question input {
+    max-width: 100%;
+}
+
+/* ------------------------- Tela 3b,c ------------------------- */
+
+.tela_3b .form_question input:nth-child(3), 
+.tela_3b .form_question input:nth-child(5){
+    margin-bottom: 18px;
+}
+
+.tela_3b, .tela_3c{
+    padding-bottom: 468px;
+}
+.tela_3b .form_container, .tela_3c .form_container {
+    padding-top: 0;
+}
+
+
+.tela_3c textarea {
+    position: relative;
+    box-sizing: border-box;
+    resize: none;
+    width: 100%;
+    max-width: 100%;
+    height: 46px;
+    padding-top: 12px;
+    padding-left: 14px;
+    padding-right: 14px;
+    border: 1px solid #D1D1D1;
+    border-radius: 5px;
+    padding-left: 23.16px;
+    z-index: 0;
+}
+.tela_3c textarea::placeholder {
+    position: absolute;
+    top: 11px;
+    left: 23.16px;
+    width: 152px;
+    height: 22px;
+    font-family: 'Roboto';
+    font-style: italic;
+    font-weight: 400;
+    font-size: 19px;
+    line-height: 22px;
+    color: #BABABA;
+}
+.tela_3c textarea:focus{
+    outline: none;
+}
+.tela_3c textarea:focus::placeholder{
+    opacity: 0;
+}
+
+
+/* ------------------------- Tela 3d ------------------------- */
+.tela_3d .img_result{
+    position: relative;
+    margin-bottom: 45px;
+}
+.tela_3d .quiz_image {
+    position: relative;
+    width: 500px;
+    height: 266px;
+}
+.tela_3d .quiz_image img {
+    width: 100%;
+    height: 100%;
+}
+
+.tela_3d .quiz_image:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 5px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 65.62%, rgba(0, 0, 0, 0.8) 100%);
+}
+
+.tela_3d h3 {
+    position: absolute;
+    left: 23px;
+    bottom: 13px;
+    width: 500px;
+    height: 40px;
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 23px;
+    line-height: 27px;
+    display: flex;
+    align-items: center;
+    color: #FFFFFF;
+}
+
+.tela_3d button.reset_quiz {
+    width: 220.32px;
+    height: 44px;
+    background: #EC362D;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 21px;
+    text-align: center;
+    color: #FFF5F4;
+}
+
+.tela_3d button.back_home {
+    width: 219.64px;
+    height: 44px;
+    border: none;
+    margin-bottom: 66px;
+    margin-top: 8px;
+    background: none;
+    cursor: pointer;
+    
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 21px;
+    text-align: center;
+    color: #818181;
+}
 
 
 
@@ -368,6 +631,8 @@ button.back_home {
 
 
 
+
+/* ------------------------- Auxiliary Classes ------------------------- */
 
 .hidden {
     display: none;
@@ -375,6 +640,9 @@ button.back_home {
 
 
 
+
+
+/* ------------------------- Media Query ------------------------- */
 @media (max-width: 1100px) {
     header img{
         width: min(176px, 98vw);
@@ -422,6 +690,51 @@ button.back_home {
         line-height: 15px;
         margin-top: 1px;
     }
+
+
+    /* ------------------------- Tela 3 ------------------------- */
+    .tela_3 h1 {
+        margin-top: 37px;
+    }
+
+    .tela_3 .form_container {
+        width: min(100vw, 600px);
+        padding-left: 16px;
+        padding-right: 18px;
+    }
+
+    .tela_3 input {
+        padding-left: 14px;
+        width: min(564px, calc(100vw - 34px));
+    }
+
+    .tela_3 button {
+        margin-top: 5px;
+        width: min(calc(100vw - 50px), 368.86px);
+        font-size: 18px;
+        line-height: 21px;
+    }
+    .tela_3b, .tela_3c{
+        padding-bottom: 61px;
+    }
+
+    .tela_3c textarea{
+        height: 177px;
+    }
+    .tela_3c textarea::placeholder {
+        left: 14px;
+    }
+
+    .tela_3d .quiz_image {
+        position: relative;
+        width: min(500px, calc(100vw - 36px));
+        height: calc(0.532 * min(500px, calc(100vw - 36px)));
+    }
+
+    .tela_3d h3 {
+        left: 17px;
+    }
+
 }
 
 
