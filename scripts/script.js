@@ -1,5 +1,6 @@
 let every_quiz_gallery = document.querySelector('.quiz_gallery');
 let selected_quiz;
+
 get_server();
 
 function get_server(){
@@ -26,6 +27,7 @@ function reneder_quiz_tela2(object){
     
     let questions_container = document.querySelector('.questions_container');
     let answers;
+    let question_title;
     console.log(array[selected_quiz].questions.length)
     let questions = array[selected_quiz].questions;
     for(let i = 0; i < questions.length; i++){
@@ -40,17 +42,24 @@ function reneder_quiz_tela2(object){
                     </div>
                 </div>`;
 
-                answers = document.querySelector(`.qs${i}`);
+        answers = document.querySelector(`.qs${i}`);
+        question_titles = questions_container.querySelectorAll('.question_title');
+        console.log('question_titles');
+        console.log(question_titles);
+        console.log('${questions[i].color}');
+        console.log(`${questions[i].color}`);
+        console.log('i', i);
+        question_titles[i].style.backgroundColor = `${questions[i].color}`;
 
-                for(let j = 0; j < questions[i].answers.length; j++){
-                    console.log(questions[i].answers.length)
-                    answers.innerHTML += `
-                            <div class="alternative">
-                                <img src="${questions[i].answers[j].image}">
-                                <h2>${questions[i].answers[j].text}</h2>
-                            </div>`
-                            
-                }
+        for(let j = 0; j < questions[i].answers.length; j++){
+            console.log(questions[i].answers.length)
+            answers.innerHTML += `
+                    <div class="alternative">
+                        <img src="${questions[i].answers[j].image}">
+                        <h2>${questions[i].answers[j].text}</h2>
+                    </div>`
+                    
+        }
 
     }
     
@@ -61,18 +70,12 @@ function reneder_quiz(object){
     const array = object.data;
     
     for(let i = 0; i < array.length; i++){
-    every_quiz_gallery.innerHTML += `
+        every_quiz_gallery.innerHTML += `
                     <div class="quiz" onclick="click_quiz(${i})">
                         <div class="quiz_image">
                             <img src="${array[i].image}">
                         </div>
                         <h1>${array[i].title}</h1>
                     </div>`
-}
-
-
-
-
-
-
+    }
 }
