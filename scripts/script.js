@@ -7,6 +7,23 @@ function get_server(){
     promise.then(reneder_quiz);
 }
 
+
+function reneder_quiz(object){
+    
+    const array = object.data;
+    
+    for(let i = 0; i < array.length; i++){
+    every_quiz_gallery.innerHTML += `
+                    <div class="quiz" onclick="click_quiz(${i})">
+                        <div class="quiz_image">
+                            <img src="${array[i].image}">
+                        </div>
+                        <h1>${array[i].title}</h1>
+                    </div>`
+}
+
+
+}
 function click_quiz(indice){
     selected_quiz = indice;
     document.querySelector(".tela_1").classList.add("hidden");
@@ -17,8 +34,8 @@ function click_quiz(indice){
 
 function reneder_quiz_tela2(object){
     const array = object.data;
-    let header = document.querySelector('.quiz_title');
-    header.innerHTML += `
+    let quiz_header = document.querySelector('.quiz_title');
+    quiz_header.innerHTML += `
                 <div class="quiz_title_image">
                     <img src="${array[selected_quiz].image}" alt="">
                 </div>
@@ -56,23 +73,3 @@ function reneder_quiz_tela2(object){
     
 }
 
-function reneder_quiz(object){
-    
-    const array = object.data;
-    
-    for(let i = 0; i < array.length; i++){
-    every_quiz_gallery.innerHTML += `
-                    <div class="quiz" onclick="click_quiz(${i})">
-                        <div class="quiz_image">
-                            <img src="${array[i].image}">
-                        </div>
-                        <h1>${array[i].title}</h1>
-                    </div>`
-}
-
-
-
-
-
-
-}

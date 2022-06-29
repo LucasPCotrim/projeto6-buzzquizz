@@ -107,17 +107,12 @@ header img {
     margin-bottom: 12px;
 }
 
-.quiz_gallery {
+.quiz_gallery, .my_quiz_gallery {
     display: flex;
     flex-wrap: wrap;
     gap: 12px;
 }
 
-.my_quiz_gallery {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-}
 .quiz {
     position: relative;
     width: 340px;
