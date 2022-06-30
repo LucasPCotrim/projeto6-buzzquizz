@@ -1,8 +1,4 @@
 // -------------------------- Global Variables --------------------------
-
-let perguntas_qtd;
-let niveis_qtd;
-
 let API_quizzes_list = [];
 let my_quizzes_list = [];
 let selected_quiz_index;
@@ -63,7 +59,7 @@ function render_API_quizzes(object){
                         </div>
                         <h1>${API_quizzes_list[i].title}</h1>
                         </div>`
-                    }
+    }
 }
 
 //----------------------------------------------------------------------------------------
@@ -99,12 +95,7 @@ function load_tela_1() {
                                     <ion-icon name="add-circle" class="add_quiz_small_button" onclick="load_tela_3()"></ion-icon>
                                 </div>
                                 <div class="my_quiz_gallery">
-                                    <div class="quiz">
-                                        <div class="quiz_image">
-                                            <img src="imgs/harry_potter.png" alt="harry_potter picture">
-                                        </div>
-                                        <h1>O quão Potterhead é você?</h1>
-                                    </div>
+                                    
                                 </div>
                             </section>
                             <section class="quiz_container" id="API_quizzes_container">
@@ -267,7 +258,7 @@ function select_alternative(question_index, alternative_index){
     
     // There are still more unanswered questions
     if(user_answers_array.length < current_quiz.questions.length){
-        const next_question = questions[question_index+1];
+        const next_question = questions[question_index + 1];
         setTimeout(() => {
             next_question.classList.remove('hidden');
             next_question.scrollIntoView({behavior: 'smooth'});
@@ -758,12 +749,8 @@ function proceed_to_create_levels() {
 // Outputs: none
 //----------------------------------------------------------------------------------------
 function load_tela_3c(){
-
+    alert('load_tela_3c()');
 }
-
-
-
-
 
 
 
