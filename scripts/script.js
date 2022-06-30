@@ -166,20 +166,6 @@ function add_quiz(){
 }
 
 
-
-
-
-
-
-
-
-
-// -------------------------- Main --------------------------
-load_tela_1();
-
-
-
-
 function create_quiz(){
     const text = document.querySelector(".text");
     const url = document.querySelector(".url");
@@ -216,3 +202,17 @@ function create_quiz(){
         qtd_niveis.value = "";
     }
 }
+
+
+
+
+
+
+
+// -------------------------- Main --------------------------
+load_tela_1();
+
+
+
+
+
