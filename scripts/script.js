@@ -5,6 +5,7 @@ let selected_quiz_index;
 let current_quiz;
 let user_answers_array = [];
 let my_quizzes_counter = 0;
+const API_server = "https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes";
 
 let DOM_page_content = document.querySelector('.page_content');
 let DOM_API_quizzes_gallery;
@@ -12,8 +13,16 @@ let DOM_API_quizzes_gallery;
 
 // -------------------------- Functions --------------------------
 
-
-
+//----------------------------------------------------------------------------------------
+// Function: render_API_quizzes(object)
+// Description: Callback function from GET request to 'API_server'.
+//              Renders API Quizzes.
+//
+// Inputs:
+// - object: Server response in case of successful GET request.
+//
+// Outputs: none;
+//----------------------------------------------------------------------------------------
 function render_API_quizzes(object){
     API_quizzes_list = object.data;
     console.log('API_quizzes_list');
@@ -32,13 +41,27 @@ function render_API_quizzes(object){
     }
 }
 
-
+//----------------------------------------------------------------------------------------
+// Function: get_API_quizzes()
+// Description: Sends a GET request to 'API_server'.
+//
+// Inputs: none
+//
+// Outputs: none;
+//----------------------------------------------------------------------------------------
 function get_API_quizzes(){
-    const promise = axios.get("https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes");
+    const promise = axios.get(API_server);
     promise.then(render_API_quizzes);
 }
 
-
+//----------------------------------------------------------------------------------------
+// Function: load_tela_1()
+// Description: Loads screen 1 with user-created and API Quizzes
+//
+// Inputs: none
+//
+// Outputs: none;
+//----------------------------------------------------------------------------------------
 function load_tela_1() {
     const tela_1_div = `<div class="tela_1">
                             <section class="empty_quiz_container">
@@ -71,6 +94,14 @@ function load_tela_1() {
     render_my_quizzes();
 }
 
+//----------------------------------------------------------------------------------------
+// Function: load_tela_2()
+// Description: Loads screen 2 given selected Quizz
+//
+// Inputs: none
+//
+// Outputs: none;
+//----------------------------------------------------------------------------------------
 function load_tela_2() {
     const tela_2_div = `<div class="tela_2">
                             <div class="quiz_title">
@@ -92,8 +123,19 @@ function load_tela_2() {
     DOM_page_content.innerHTML = tela_2_div;
 }
 
-
-// quiz_container_name == 'API_quizzes' ou 'my_quizzes'
+//----------------------------------------------------------------------------------------
+// Function: click_quiz(quiz_container_name, index)
+// Description: Function called whenever user clicks on a Quizz in screen 1.
+//
+// Inputs:
+// - quiz_container_name ('API_quizzes' or 'my_quizzes'): Indicates whether selected Quizz
+//                                                        is from the API Quizz container
+//                                                        or from the user-created Quizz
+//                                                        .container
+// - index: Index of selected Quizz in the respective container.
+//
+// Outputs: none;
+//----------------------------------------------------------------------------------------
 function click_quiz(quiz_container_name, index){
     selected_quiz_index = index;
     load_tela_2();
@@ -101,6 +143,19 @@ function click_quiz(quiz_container_name, index){
     user_answers_array = [];
 }
 
+//----------------------------------------------------------------------------------------
+// Function: render_quiz_tela2(quiz_container_name, index)
+// Description: Renders selected Quizz in screen 2.
+//
+// Inputs:
+// - quiz_container_name ('API_quizzes' or 'my_quizzes'): Indicates whether selected Quizz
+//                                                        is from the API Quizz container
+//                                                        or from the user-created Quizz
+//                                                        .container
+// - index: Index of selected Quizz in the respective container.
+//
+// Outputs: none;
+//----------------------------------------------------------------------------------------
 function render_quiz_tela2(quiz_container_name, index){
     window.scroll({top: 0, left: 0, behavior: 'auto' });
 
@@ -146,16 +201,21 @@ function render_quiz_tela2(quiz_container_name, index){
                                 </div>`;     
         }
     }
-    console.log(questions_container.querySelector('.question').classList);
     questions_container.querySelector('.question').classList.remove('hidden');
-    console.log(questions_container.querySelector('.question').classList);
     
 }
 
-
-
-
-
+//----------------------------------------------------------------------------------------
+// Function: select_alternative(question_index, alternative_index)
+// Description: Function called whenever user clicks on answer to a question in the Quizz
+//              Performs style changes to answers and scrolls to next question or result.
+//
+// Inputs:
+// - question_index: Question index in 'current_quiz'
+// - alternative_index: Index of answer clicked
+//
+// Outputs: none;
+//----------------------------------------------------------------------------------------
 function select_alternative(question_index, alternative_index){
 
     // Check if user already entered an answer to this question
@@ -206,8 +266,15 @@ function select_alternative(question_index, alternative_index){
     }
 }
 
-
-
+//----------------------------------------------------------------------------------------
+// Function: calculate_user_score()
+// Description: Calculates user score on current Quizz given answers chosen ('user_answers_array')
+//
+// Inputs: none
+//
+// Outputs:
+// - score: Percentage score on current finished Quizz (Number with no decimal places)
+//----------------------------------------------------------------------------------------
 function calculate_user_score() {
     let q_i;
     let a_i;
@@ -220,20 +287,23 @@ function calculate_user_score() {
             cont_correct++;
         }
     }
-    console.log('cont_correct = ', cont_correct);
-    console.log('user_answers_array.length = ', user_answers_array.length)
     let score = Math.round(100*(cont_correct / user_answers_array.length));
     return score;
 }
 
 
-
+//----------------------------------------------------------------------------------------
+// Function: display_quiz_result()
+// Description: Renders 'quiz_result' div given user score
+//
+// Inputs: none
+//
+// Outputs:
+//----------------------------------------------------------------------------------------
 function display_quiz_result() {
 
     // Calculate user score
     let user_score = calculate_user_score();
-    console.log('user_score = ' + String(user_score));
-    console.log(current_quiz);
 
     // Obtain user level given score
     let quiz_levels = Object.assign({},current_quiz).levels;
@@ -260,9 +330,14 @@ function display_quiz_result() {
                                     `;
 }
 
-
-
-
+//----------------------------------------------------------------------------------------
+// Function: render_my_quizzes()
+// Description: Renders user-created Quizzes (if there are none, renders 'empty_quiz_container')
+//
+// Inputs: none
+//
+// Outputs:
+//----------------------------------------------------------------------------------------
 function render_my_quizzes(){
     if(my_quizzes_list.length > 0){
         document.querySelector(".empty_quiz_container").classList.add("hidden");
@@ -273,6 +348,9 @@ function render_my_quizzes(){
         document.querySelectorAll(".quiz_container")[0].classList.add("hidden");
     }
 }
+
+
+
 
 
 
