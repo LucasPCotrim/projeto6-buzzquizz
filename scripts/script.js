@@ -407,72 +407,8 @@ function load_tela_3(){
                                 </div>
                                 <button onclick="create_quiz()">Prosseguir para criar perguntas</button>
                             </div>
-                            <div class="tela_3b hidden">
-                                <h1>Crie suas perguntas</h1>
-                                <div class="form_container">
-                                    <div class="form_question">
-                                        <h2>Pergunta 1</h2>
-                                        <input type="text" placeholder="Texto da pergunta" required>
-                                        <input type="text" placeholder="Cor de fundo da pergunta" required>
-                                    </div>
-                                    <div class="form_question">
-                                        <h2>Resposta correta</h2>
-                                        <input type="text" placeholder="Resposta correta" required>
-                                        <input type="text" placeholder="URL da imagem" required>
-                                    </div>
-                                    <div class="form_question">
-                                        <h2>Respostas incorretas</h2>
-                                        <input type="text" placeholder="Resposta incorreta 1" required>
-                                        <input type="text" placeholder="URL da imagem 1" required>
-                                        <input type="text" placeholder="Resposta incorreta 2" required>
-                                        <input type="text" placeholder="URL da imagem 2" required>
-                                        <input type="text" placeholder="Resposta incorreta 3" required>
-                                        <input type="text" placeholder="URL da imagem 3" required>
-                                    </div>
-                                </div>
-                                <div class="form_container">
-                                    <div class="form_question">
-                                        <h2>Pergunta 2</h2>
-                                        <input type="text" placeholder="Texto da pergunta" required>
-                                        <input type="text" placeholder="Cor de fundo da pergunta" required>
-                                    </div>
-                                    <div class="form_question">
-                                        <h2>Resposta correta</h2>
-                                        <input type="text" placeholder="Resposta correta" required>
-                                        <input type="url" placeholder="URL da imagem" required>
-                                    </div>
-                                    <div class="form_question">
-                                        <h2>Respostas incorretas</h2>
-                                        <input type="text" placeholder="Resposta incorreta 1" required>
-                                        <input type="url" placeholder="URL da imagem 1" required>
-                                        <input type="text" placeholder="Resposta incorreta 2" required>
-                                        <input type="url" placeholder="URL da imagem 2" required>
-                                        <input type="text" placeholder="Resposta incorreta 3" required>
-                                        <input type="url" placeholder="URL da imagem 3" required>
-                                    </div>
-                                </div>
-                                <div class="form_container">
-                                    <div class="form_question">
-                                        <h2>Pergunta 3</h2>
-                                        <input type="text" placeholder="Texto da pergunta" required>
-                                        <input type="text" placeholder="Cor de fundo da pergunta" required>
-                                    </div>
-                                    <div class="form_question">
-                                        <h2>Resposta correta</h2>
-                                        <input type="text" placeholder="Resposta correta" required>
-                                        <input type="url" placeholder="URL da imagem" required>
-                                    </div>
-                                    <div class="form_question">
-                                        <h2>Respostas incorretas</h2>
-                                        <input type="text" placeholder="Resposta incorreta 1" required>
-                                        <input type="url" placeholder="URL da imagem 1" required>
-                                        <input type="text" placeholder="Resposta incorreta 2" required>
-                                        <input type="url" placeholder="URL da imagem 2" required>
-                                        <input type="text" placeholder="Resposta incorreta 3" required>
-                                        <input type="url" placeholder="URL da imagem 3" required>
-                                    </div>
-                                </div>
-                                <button>Prosseguir para criar perguntas</button>
+                            <div class="tela_3b">
+                                
                             </div>
                             <div class="tela_3c hidden">
                                 <h1>Agora decida os níveis</h1>
