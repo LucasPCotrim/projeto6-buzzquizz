@@ -98,6 +98,35 @@ header img {
     margin-bottom: -21px;
     margin-top: 69px;
 }
+
+.cabecalho_meus_quizes > p{
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 23px;
+    color: #000000;
+    
+}
+
+.cabecalho_meus_quizes > ion-icon{
+    font-size: 31px;
+    color: #EC362D;
+    margin-left: 17px;
+    
+}
+
+.cabecalho_meus_quizes > ion-icon:hover{
+    cursor: pointer;
+    
+}
+
+.cabecalho_meus_quizes{
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
 .quiz_container h1 {
     font-family: 'Roboto';
     font-style: normal;

@@ -1,5 +1,6 @@
 let every_quiz_gallery = document.querySelector('.quiz_gallery');
 let selected_quiz;
+let counter_my_quizes = 1;
 
 get_server();
 
@@ -17,6 +18,7 @@ function click_quiz(indice){
 }
 
 function reneder_quiz_tela2(object){
+    window.scroll({top: 0, left: 0, behavior: 'smooth' });
     const array = object.data;
     let quiz_header = document.querySelector('.quiz_title');
     quiz_header.innerHTML += `
@@ -78,4 +80,19 @@ function reneder_quiz(object){
                         <h1>${array[i].title}</h1>
                     </div>`
     }
+}
+
+
+function check_my_quizzes(){
+    if(counter_my_quizes > 0){
+        document.querySelector(".empty_quiz_container").classList.add("hidden");
+        document.querySelector(".add_quiz_small").classList.remove("hidden");
+    }
+}
+check_my_quizzes()
+
+function add_quiz(){
+    console.log("foi");
+    document.querySelector(".tela_1").classList.add("hidden");
+    document.querySelector(".tela_3").classList.remove("hidden");
 }

@@ -17,10 +17,14 @@
         <div class="tela_1">
             <section class="empty_quiz_container">
                 <h1>Você não criou nenhum quizz ainda :(</h1>
-                <button>Criar Quizz</button>
+                <button onclick="add_quiz()">Criar Quizz</button>
             </section>
             <section class="quiz_container">
-                <h1>Seus Quizzes</h1>
+                <div class="cabecalho_meus_quizes">
+                    <p>Seus Quizzes</p>
+                    <ion-icon name="add-circle" class="add_quiz_small hidden" onclick="add_quiz()"></ion-icon>
+                </div>
+        
                 <div class="my_quiz_gallery">
                     
                     <div class="quiz">
@@ -75,7 +79,7 @@
         </div>
 
 
-        <div class="tela_3">
+        <div class="tela_3 hidden">
             <div class="tela_3a">
                 <h1>Comece pelo começo</h1>
                 <div class="form_container">
