@@ -13,6 +13,7 @@ let DOM_API_quizzes_gallery;
 // -------------------------- Functions --------------------------
 
 
+
 function render_API_quizzes(object){
     API_quizzes_list = object.data;
     console.log('API_quizzes_list');
@@ -196,12 +197,68 @@ function select_alternative(question_index, alternative_index){
         }, 2000);
         
     }
-    // User answered all qeustions
+    // User answered all questions
     else{
-        alert('All questions answered')
+        setTimeout(() => {
+            display_quiz_result();
+            questions_container.querySelector('.quiz_result').scrollIntoView({behavior: 'smooth'});
+        }, 2000);
     }
 }
 
+
+
+function calculate_user_score() {
+    let q_i;
+    let a_i;
+    let cont_correct = 0;
+    for (let i = 0; i < user_answers_array.length; i++) {
+        q_i = user_answers_array[i].question;
+        a_i = user_answers_array[i].chosen_alternative;
+
+        if(current_quiz.questions[q_i].answers[a_i].isCorrectAnswer){
+            cont_correct++;
+        }
+    }
+    console.log('cont_correct = ', cont_correct);
+    console.log('user_answers_array.length = ', user_answers_array.length)
+    let score = Math.round(100*(cont_correct / user_answers_array.length));
+    return score;
+}
+
+
+
+function display_quiz_result() {
+
+    // Calculate user score
+    let user_score = calculate_user_score();
+    console.log('user_score = ' + String(user_score));
+    console.log(current_quiz);
+
+    // Obtain user level given score
+    let quiz_levels = Object.assign({},current_quiz).levels;
+    quiz_levels.sort((a, b) => {
+        return a.minValue - b.minValue;
+    });
+    let user_level_index = 0;
+    for (let i = 0; i < quiz_levels.length; i++) {
+        if(user_score >= quiz_levels[i].minValue) user_level_index=i;
+    }
+    
+    // Display user level
+    const questions_container = document.querySelector('.questions_container');
+    questions_container.innerHTML += `
+                                    <div class="quiz_result">
+                                        <div class="title">
+                                            <h1>${quiz_levels[user_level_index].title}</h1>
+                                        </div>
+                                        <div class="content">
+                                            <img src="${quiz_levels[user_level_index].image}" alt="quiz result">
+                                            <p>${quiz_levels[user_level_index].text}</p>
+                                        </div>
+                                    </div>
+                                    `;
+}
 
 
 
