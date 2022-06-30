@@ -362,6 +362,14 @@ function restart_current_quizz() {
     user_answers_array = [];
 }
 
+//----------------------------------------------------------------------------------------
+// Function: go_to_homepage()
+// Description: Returns to homepage and lists all Quizzes again
+//
+// Inputs: none
+//
+// Outputs:
+//----------------------------------------------------------------------------------------
 function go_to_homepage() {
     API_quizzes_list = [];
     my_quizzes_list = [];
@@ -373,16 +381,164 @@ function go_to_homepage() {
     load_tela_1();
 }
 
-
-
-
-
-function add_quiz(){
-    document.querySelector(".tela_1").classList.add("hidden");
-    document.querySelector(".tela_3").classList.remove("hidden");
+//----------------------------------------------------------------------------------------
+// Function: load_tela_3()
+// Description: Loads screen 3 (Quizz creation screen)
+//
+// Inputs: none
+//
+// Outputs: none;
+//----------------------------------------------------------------------------------------
+function load_tela_3(){
+    const tela_3_div = `<div class="tela_3">
+                            <div class="tela_3a">
+                                <h1>Comece pelo começo</h1>
+                                <div class="form_container">
+                                    <input type="text" class="text" placeholder="Título do seu quizz" required>
+                                    <input type="url" class="url" placeholder="URL da imagem do seu quizz" required>
+                                    <input type="number" class="qtd_perguntas" placeholder="Quantidade de perguntas do quizz" required>
+                                    <input type="number" class="qtd_niveis" placeholder="Quantidade de níveis do quizz" required>
+                                </div>
+                                <button onclick="create_quiz()">Prosseguir para criar perguntas</button>
+                            </div>
+                            <div class="tela_3b hidden">
+                                <h1>Crie suas perguntas</h1>
+                                <div class="form_container">
+                                    <div class="form_question">
+                                        <h2>Pergunta 1</h2>
+                                        <input type="text" placeholder="Texto da pergunta" required>
+                                        <input type="text" placeholder="Cor de fundo da pergunta" required>
+                                    </div>
+                                    <div class="form_question">
+                                        <h2>Resposta correta</h2>
+                                        <input type="text" placeholder="Resposta correta" required>
+                                        <input type="text" placeholder="URL da imagem" required>
+                                    </div>
+                                    <div class="form_question">
+                                        <h2>Respostas incorretas</h2>
+                                        <input type="text" placeholder="Resposta incorreta 1" required>
+                                        <input type="text" placeholder="URL da imagem 1" required>
+                                        <input type="text" placeholder="Resposta incorreta 2" required>
+                                        <input type="text" placeholder="URL da imagem 2" required>
+                                        <input type="text" placeholder="Resposta incorreta 3" required>
+                                        <input type="text" placeholder="URL da imagem 3" required>
+                                    </div>
+                                </div>
+                                <div class="form_container">
+                                    <div class="form_question">
+                                        <h2>Pergunta 2</h2>
+                                        <input type="text" placeholder="Texto da pergunta" required>
+                                        <input type="text" placeholder="Cor de fundo da pergunta" required>
+                                    </div>
+                                    <div class="form_question">
+                                        <h2>Resposta correta</h2>
+                                        <input type="text" placeholder="Resposta correta" required>
+                                        <input type="url" placeholder="URL da imagem" required>
+                                    </div>
+                                    <div class="form_question">
+                                        <h2>Respostas incorretas</h2>
+                                        <input type="text" placeholder="Resposta incorreta 1" required>
+                                        <input type="url" placeholder="URL da imagem 1" required>
+                                        <input type="text" placeholder="Resposta incorreta 2" required>
+                                        <input type="url" placeholder="URL da imagem 2" required>
+                                        <input type="text" placeholder="Resposta incorreta 3" required>
+                                        <input type="url" placeholder="URL da imagem 3" required>
+                                    </div>
+                                </div>
+                                <div class="form_container">
+                                    <div class="form_question">
+                                        <h2>Pergunta 3</h2>
+                                        <input type="text" placeholder="Texto da pergunta" required>
+                                        <input type="text" placeholder="Cor de fundo da pergunta" required>
+                                    </div>
+                                    <div class="form_question">
+                                        <h2>Resposta correta</h2>
+                                        <input type="text" placeholder="Resposta correta" required>
+                                        <input type="url" placeholder="URL da imagem" required>
+                                    </div>
+                                    <div class="form_question">
+                                        <h2>Respostas incorretas</h2>
+                                        <input type="text" placeholder="Resposta incorreta 1" required>
+                                        <input type="url" placeholder="URL da imagem 1" required>
+                                        <input type="text" placeholder="Resposta incorreta 2" required>
+                                        <input type="url" placeholder="URL da imagem 2" required>
+                                        <input type="text" placeholder="Resposta incorreta 3" required>
+                                        <input type="url" placeholder="URL da imagem 3" required>
+                                    </div>
+                                </div>
+                                <button>Prosseguir para criar perguntas</button>
+                            </div>
+                            <div class="tela_3c hidden">
+                                <h1>Agora decida os níveis</h1>
+                                <div class="form_container">
+                                    <div class="form_question">
+                                        <h2>Nível 1</h2>
+                                        <input type="text" placeholder="Título do nível" required>
+                                        <input type="number" placeholder="% de acerto mínima" required>
+                                        <input type="url" placeholder="URL da imagem do nível" required>
+                                        <textarea name="Descrição" rows="10" placeholder="Descrição do nível" required></textarea>
+                                    </div>
+                                </div>
+                                <div class="form_container">
+                                    <div class="form_question">
+                                        <h2>Nível 2</h2>
+                                        <input type="text" placeholder="Título do nível" required>
+                                        <input type="number" placeholder="% de acerto mínima" required>
+                                        <input type="url" placeholder="URL da imagem do nível" required>
+                                        <textarea name="Descrição" rows="10" placeholder="Descrição do nível" required></textarea>
+                                    </div>
+                                </div>
+                                <div class="form_container">
+                                    <div class="form_question">
+                                        <h2>Nível 3</h2>
+                                        <input type="text" placeholder="Título do nível" required>
+                                        <input type="number" placeholder="% de acerto mínima" required>
+                                        <input type="url" placeholder="URL da imagem do nível" required>
+                                        <textarea name="Descrição" rows="10" placeholder="Descrição do nível" required></textarea>
+                                    </div>
+                                </div>
+                                <button>Finalizar Quizz</button>
+                            </div>
+                            <div class="tela_3d hidden">
+                                <h1>Seu quiz está pronto!</h1>
+                                <div class="img_result">
+                                    <div class="quiz_image">
+                                        <img src="imgs/harry_potter.png">
+                                    </div>
+                                    <h3>O quão Potterhead é você?</h3>
+                                </div>
+                                <button class="reset_quiz">
+                                    Reiniciar Quizz
+                                </button>
+                                <button class="back_home">
+                                    Voltar para home
+                                </button>
+                            </div>
+                        </div>`;
+    DOM_page_content.innerHTML = tela_3_div;
 }
 
+//----------------------------------------------------------------------------------------
+// Function: add_quiz()
+// Description: Takes user to Quizz creation screen (tela 3)
+//
+// Inputs: none
+//
+// Outputs: none;
+//----------------------------------------------------------------------------------------
+function add_quiz(){
+    load_tela_3()
+}
 
+//----------------------------------------------------------------------------------------
+// Function: create_quiz()
+// Description: Get user inputs for Quizz creation and checks if all inputs are valid.
+//              Displays alerts in case any input is invalid.
+//
+// Inputs: none
+//
+// Outputs: none;
+//----------------------------------------------------------------------------------------
 function create_quiz(){
     const text = document.querySelector(".text");
     const url = document.querySelector(".url");
