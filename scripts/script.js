@@ -180,3 +180,39 @@ load_tela_1();
 
 
 
+function create_quiz(){
+    const text = document.querySelector(".text");
+    const url = document.querySelector(".url");
+    const qtd_perguntas = document.querySelector(".qtd_perguntas");
+    const qtd_niveis = document.querySelector(".qtd_niveis");
+    if(text.value.length >= 20){
+        console.log("titulo ta ok")
+
+    } else{
+        text.value = "";
+        alert("titulo deve ter entre 20 e 65 caracteristicas");
+    }
+
+    try {
+        let verifica = new URL(url.value)
+        console.log("Valid URL!")
+      } catch(err) {
+          console.log("Invalid URL!")
+          url.value = "";
+          alert("url invalida");
+      }
+
+    if(qtd_perguntas.value >= 3){
+        console.log("qtd perguntas está ok")
+    } else{
+        alert("qtd de perguntas menor que 3");
+        qtd_perguntas.value = ";"
+    }
+
+    if(qtd_niveis.value >= 2){
+        console.log("qtd niveis está ok")
+    } else{
+        alert("qtd de niveis menor que 2");
+        qtd_niveis.value = "";
+    }
+}
