@@ -773,64 +773,6 @@ function load_tela_3c(){
 
 
 
-function create_ask(){
-    let url_esta_certa;
-    let tudo_ok;
-    let tudo_ok2;
-    for(let i =0; i < perguntas_qtd; i++){
-
-        let texto_pergunta = document.querySelector(`.texto_pergunta${i}`).value;
-        console.log(texto_pergunta)
-        let texto_resposta = document.querySelector(`.texto_resposta${i}`).value;
-        console.log(texto_resposta)
-        let cor_fundo = document.querySelector(`.cor_fundo${i}`).value;
-        console.log(cor_fundo)
-        let url_resposta_certa = document.querySelector(`.url_resposta_certa${i}`).value;
-        console.log(url_resposta_certa)
-
-        try {
-            let ver = new URL(url_resposta_certa)
-            console.log("tudo ok")
-            url_esta_certa = 1;
-          } catch(err) {
-            url_esta_certa = 0;
-          }
-
-        
-        if(texto_pergunta.length >= 20 && texto_resposta != "" && cor_fundo[0] == "#" && cor_fundo.length == 7 && url_esta_certa == 1 ){
-            tudo_ok = 1;
-        }
-        else {
-            tudo_ok = 0;
-        }
-
-        for(let j = 0; j < niveis_qtd; j++){
-            
-            let url_resposta_errada = document.querySelector(`.url_resposta_errada${i}`).value;
-
-            try {
-                let veri = new URL(url_resposta_errada.value)
-                console.log("tudo ok")
-                url_esta_certa = 1;
-              } catch(err) {
-                url_esta_certa = 0;
-              }
-
-            if(url_esta_certa == 1){
-                tudo_ok2 = 1;
-            } else{
-                tudo_ok2 == 0;
-            }
-        }
-    }
-
-    if( tudo_ok == 1 && tudo_ok2 == 1){
-        alert("ok");
-    } else{
-        alert("insira as informações corretamente");
-    }
-}
-
 
 
 
