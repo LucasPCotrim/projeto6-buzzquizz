@@ -10,7 +10,8 @@ let selected_quiz_index;
 let current_quiz_container_name;
 let current_quiz;
 let user_answers_array = [];
-const API_server = "https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes";
+const API_server = "https://mock-api.driven.com.br/api/v7/buzzquizz/quizzes"; //"https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes"
+
 
 let DOM_page_content = document.querySelector('.page_content');
 let DOM_API_quizzes_gallery;
