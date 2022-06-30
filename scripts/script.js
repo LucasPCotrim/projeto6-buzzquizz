@@ -1,15 +1,15 @@
-let every_quiz_gallery = document.querySelector('.quiz_gallery');
-let selected_quiz;
-let counter_my_quizes = 1;
+// -------------------------- Global Variables --------------------------
+
 let perguntas_qtd;
 let niveis_qtd;
-// -------------------------- Global Variables --------------------------
+
 let API_quizzes_list = [];
 let my_quizzes_list = [];
 let selected_quiz_index;
 let current_quiz_container_name;
 let current_quiz;
 let user_answers_array = [];
+let current_user_created_quiz;
 const API_server = "https://mock-api.driven.com.br/api/v7/buzzquizz/quizzes"; //"https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes"
 
 
@@ -91,12 +91,12 @@ function load_tela_1() {
     const tela_1_div = `<div class="tela_1">
                             <section class="empty_quiz_container">
                                 <h1>Você não criou nenhum quizz ainda :(</h1>
-                                <button onclick="add_quiz()">Criar Quizz</button>
+                                <button onclick="load_tela_3()">Criar Quizz</button>
                             </section>
                             <section class="quiz_container hidden" id="my_quizzes_container">
                                 <div class="my_quizzes_header">
                                     <p>Seus Quizzes</p>
-                                    <ion-icon name="add-circle" class="add_quiz_small_button" onclick="add_quiz()"></ion-icon>
+                                    <ion-icon name="add-circle" class="add_quiz_small_button" onclick="load_tela_3()"></ion-icon>
                                 </div>
                                 <div class="my_quiz_gallery">
                                     <div class="quiz">
@@ -405,13 +405,144 @@ function load_tela_3(){
                                     <input type="number" class="qtd_perguntas" placeholder="Quantidade de perguntas do quizz" required>
                                     <input type="number" class="qtd_niveis" placeholder="Quantidade de níveis do quizz" required>
                                 </div>
-                                <button onclick="create_quiz()">Prosseguir para criar perguntas</button>
+                                <button onclick="proceed_to_create_questions()">Prosseguir para criar perguntas</button>
                             </div>
-                            <div class="tela_3b hidden">
-                                <h1>Crie suas perguntas</h1>
+                        </div>`;
+    DOM_page_content.innerHTML = tela_3_div;
+}
+
+
+//----------------------------------------------------------------------------------------
+// Function: valid_url(url_string)
+// Description: Checks if a given string is a valid URL
+//
+// Inputs: url_string
+//
+// Outputs: true (if valid URL) or false (otherwise);
+//----------------------------------------------------------------------------------------
+function valid_url(url_string){
+    let url;
+    try {
+        url = new URL(url_string);
+      } catch (_) {
+        return false;  
+    }
+    return (url.protocol === "http:" || url.protocol === "https:");
+}
+
+//----------------------------------------------------------------------------------------
+// Function: validate_inputs_tela_3a()
+// Description: Checks if inputs on screen 3a are valid (initial quizz creation screen)
+//
+// Inputs: none
+//
+// Outputs:
+// - is_valid: true if all inputs in screen 3a are valid (false otherwise)
+//----------------------------------------------------------------------------------------
+function validate_inputs_tela_3a() {
+    const DOM_tela_3a = document.querySelector('.tela_3a')
+    const DOM_quiz_title = DOM_tela_3a.querySelector(".text");
+    const DOM_url = DOM_tela_3a.querySelector(".url");
+    const DOM_n_questions = DOM_tela_3a.querySelector(".qtd_perguntas");
+    const DOM_n_levels = DOM_tela_3a.querySelector(".qtd_niveis");
+
+    let is_valid = true;
+
+    // Check if Quiz title is at least 20 characters long
+    if (DOM_quiz_title.value.length <= 20){
+        is_valid = false;
+        DOM_quiz_title.value = "";
+        DOM_url.value = "";
+        DOM_n_questions.value = "";
+        DOM_n_levels.value = "";
+        alert('O título do quizz deve ter pelo meno 20 caracteres!');
+        return is_valid;
+    }
+    // Check if image URL is valid
+    if (!valid_url(DOM_url.value)){
+        is_valid = false;
+        DOM_quiz_title.value = "";
+        DOM_url.value = "";
+        DOM_n_questions.value = "";
+        DOM_n_levels.value = "";
+        alert('A url da imagem deve ser válida!');
+        return is_valid;
+    }
+    // Check if number of questions is integer and >= 3
+    console.log('DOM_n_questions.value = ');
+    console.log(DOM_n_questions.value);
+    if (Number(DOM_n_questions.value) % 1 != 0 || Number(DOM_n_questions.value) < 3){
+        is_valid = false;
+        DOM_quiz_title.value = "";
+        DOM_url.value = "";
+        DOM_n_questions.value = "";
+        DOM_n_levels.value = "";
+        alert('O número de perguntas deve ser maior ou igual a 3!');
+        return is_valid;
+    }
+    // Check if number of levels is integer and >= 2
+    console.log('DOM_n_levels.value = ');
+    console.log(DOM_n_levels.value);
+    if (Number(DOM_n_levels.value) % 1 != 0 || Number(DOM_n_levels.value) < 2){
+        is_valid = false;
+        DOM_quiz_title.value = "";
+        DOM_url.value = "";
+        DOM_n_questions.value = "";
+        DOM_n_levels.value = "";
+        alert('O número de níveis deve ser maior ou igual a 2!');
+        return is_valid;
+    }
+
+    // Store current user-created Quizz on global variable
+    current_user_created_quiz = {
+        title: DOM_quiz_title.value,
+        image: DOM_url.value,
+        questions: new Array(Number(DOM_n_questions.value)).fill(null),
+        levels: new Array(Number(DOM_n_levels.value)).fill(null)
+    };
+
+    return is_valid;
+}
+
+
+//----------------------------------------------------------------------------------------
+// Function: proceed_to_create_questions()
+// Description: Get user inputs for Quizz creation and checks if all inputs are valid.
+//              Displays alerts in case any input is invalid.
+//              Calls function load_tela_3b().
+//
+// Inputs: none
+//
+// Outputs: none;
+//----------------------------------------------------------------------------------------
+function proceed_to_create_questions(){
+    // Checks if inputs on screen 3a are valid before rendering screen 3b
+    let is_valid = validate_inputs_tela_3a();
+    if (!is_valid) return;
+
+    // Renders screen 3b (questions creation screen)
+    load_tela_3b();
+}
+
+
+//----------------------------------------------------------------------------------------
+// Function: get_form_container_divs_tela3b()
+// Description: Returns an array of strings representing divs for each form_container
+//              given global variable 'current_user_created_quiz'
+//
+// Inputs: none
+//
+// Outputs:
+// - form_container_divs: Array of strings representing each question form for screen 3b
+//----------------------------------------------------------------------------------------
+function get_form_container_divs_tela3b(){
+    let form_container_divs = [];
+
+    for (let i = 0; i < current_user_created_quiz.questions.length; i++) {
+        const form_container_div = `
                                 <div class="form_container">
                                     <div class="form_question">
-                                        <h2>Pergunta 1</h2>
+                                        <h2>Pergunta ${i+1}</h2>
                                         <input type="text" placeholder="Texto da pergunta" required>
                                         <input type="text" placeholder="Cor de fundo da pergunta" required>
                                     </div>
@@ -429,197 +560,218 @@ function load_tela_3(){
                                         <input type="text" placeholder="Resposta incorreta 3" required>
                                         <input type="text" placeholder="URL da imagem 3" required>
                                     </div>
-                                </div>
-                                <div class="form_container">
-                                    <div class="form_question">
-                                        <h2>Pergunta 2</h2>
-                                        <input type="text" placeholder="Texto da pergunta" required>
-                                        <input type="text" placeholder="Cor de fundo da pergunta" required>
-                                    </div>
-                                    <div class="form_question">
-                                        <h2>Resposta correta</h2>
-                                        <input type="text" placeholder="Resposta correta" required>
-                                        <input type="url" placeholder="URL da imagem" required>
-                                    </div>
-                                    <div class="form_question">
-                                        <h2>Respostas incorretas</h2>
-                                        <input type="text" placeholder="Resposta incorreta 1" required>
-                                        <input type="url" placeholder="URL da imagem 1" required>
-                                        <input type="text" placeholder="Resposta incorreta 2" required>
-                                        <input type="url" placeholder="URL da imagem 2" required>
-                                        <input type="text" placeholder="Resposta incorreta 3" required>
-                                        <input type="url" placeholder="URL da imagem 3" required>
-                                    </div>
-                                </div>
-                                <div class="form_container">
-                                    <div class="form_question">
-                                        <h2>Pergunta 3</h2>
-                                        <input type="text" placeholder="Texto da pergunta" required>
-                                        <input type="text" placeholder="Cor de fundo da pergunta" required>
-                                    </div>
-                                    <div class="form_question">
-                                        <h2>Resposta correta</h2>
-                                        <input type="text" placeholder="Resposta correta" required>
-                                        <input type="url" placeholder="URL da imagem" required>
-                                    </div>
-                                    <div class="form_question">
-                                        <h2>Respostas incorretas</h2>
-                                        <input type="text" placeholder="Resposta incorreta 1" required>
-                                        <input type="url" placeholder="URL da imagem 1" required>
-                                        <input type="text" placeholder="Resposta incorreta 2" required>
-                                        <input type="url" placeholder="URL da imagem 2" required>
-                                        <input type="text" placeholder="Resposta incorreta 3" required>
-                                        <input type="url" placeholder="URL da imagem 3" required>
-                                    </div>
-                                </div>
-                                <button>Prosseguir para criar perguntas</button>
-                            </div>
-                            <div class="tela_3c hidden">
-                                <h1>Agora decida os níveis</h1>
-                                <div class="form_container">
-                                    <div class="form_question">
-                                        <h2>Nível 1</h2>
-                                        <input type="text" placeholder="Título do nível" required>
-                                        <input type="number" placeholder="% de acerto mínima" required>
-                                        <input type="url" placeholder="URL da imagem do nível" required>
-                                        <textarea name="Descrição" rows="10" placeholder="Descrição do nível" required></textarea>
-                                    </div>
-                                </div>
-                                <div class="form_container">
-                                    <div class="form_question">
-                                        <h2>Nível 2</h2>
-                                        <input type="text" placeholder="Título do nível" required>
-                                        <input type="number" placeholder="% de acerto mínima" required>
-                                        <input type="url" placeholder="URL da imagem do nível" required>
-                                        <textarea name="Descrição" rows="10" placeholder="Descrição do nível" required></textarea>
-                                    </div>
-                                </div>
-                                <div class="form_container">
-                                    <div class="form_question">
-                                        <h2>Nível 3</h2>
-                                        <input type="text" placeholder="Título do nível" required>
-                                        <input type="number" placeholder="% de acerto mínima" required>
-                                        <input type="url" placeholder="URL da imagem do nível" required>
-                                        <textarea name="Descrição" rows="10" placeholder="Descrição do nível" required></textarea>
-                                    </div>
-                                </div>
-                                <button>Finalizar Quizz</button>
-                            </div>
-                            <div class="tela_3d hidden">
-                                <h1>Seu quiz está pronto!</h1>
-                                <div class="img_result">
-                                    <div class="quiz_image">
-                                        <img src="imgs/harry_potter.png">
-                                    </div>
-                                    <h3>O quão Potterhead é você?</h3>
-                                </div>
-                                <button class="reset_quiz">
-                                    Reiniciar Quizz
-                                </button>
-                                <button class="back_home">
-                                    Voltar para home
-                                </button>
-                            </div>
-                        </div>`;
-    DOM_page_content.innerHTML = tela_3_div;
-}
-
-//----------------------------------------------------------------------------------------
-// Function: add_quiz()
-// Description: Takes user to Quizz creation screen (tela 3)
-//
-// Inputs: none
-//
-// Outputs: none;
-//----------------------------------------------------------------------------------------
-function add_quiz(){
-    load_tela_3()
-}
-
-//----------------------------------------------------------------------------------------
-// Function: create_quiz()
-// Description: Get user inputs for Quizz creation and checks if all inputs are valid.
-//              Displays alerts in case any input is invalid.
-//
-// Inputs: none
-//
-// Outputs: none;
-//----------------------------------------------------------------------------------------
-function create_quiz(){
-    let cont = 0;
-    const text = document.querySelector(".text");
-    const url = document.querySelector(".url");
-    const qtd_perguntas = document.querySelector(".qtd_perguntas");
-    const qtd_niveis = document.querySelector(".qtd_niveis");
-    if(text.value.length >= 20 && qtd_perguntas.value >= 3 && qtd_niveis.value >= 2){
-        try {
-            let verifica = new URL(url.value)
-            console.log("tudo ok")
-            cont = 1;
-            perguntas_qtd = qtd_perguntas.value;
-            niveis_qtd = qtd_niveis.value;
-          } catch(err) {
-            text.value = "";
-            url.value = "";
-            qtd_niveis.value = "";
-            qtd_perguntas.value = "";
-            alert("insira as informações corretamente");
-          }
-
-    } else{
-        text.value = "";
-        url.value = "";
-        qtd_niveis.value = "";
-        qtd_perguntas.value = "";
-        alert("insira as informações corretamente");
+                                </div>`;
+        form_container_divs.push(form_container_div);
     }
+    return form_container_divs;
+}
 
-    if(cont = 1){
 
-        document.querySelector(".tela_3a").classList.add("hidden");
-        document.querySelector(".tela_3b").classList.remove("hidden");
-        let galery_ask = document.querySelector(".tela_3b");
-        galery_ask.innerHTML += `<h1>Crie suas perguntas</h1>`
-        
-        for (let i = 0; i < qtd_perguntas.value; i++) {
-           
-            galery_ask.innerHTML += `
-                    <div class="form_container">
-                        <div class="form_question pergunta">
-                            <h2>Pergunta ${i+1}</h2>
-                            <input class"texto_pergunta${i}" type="text" placeholder="Texto da pergunta" required>
-                            <input class"cor_fundo${i}" type="text" placeholder="Cor de fundo da pergunta" required>
-                        </div>
-                        <div class="form_question correto">
-                            <h2>Resposta correta</h2>
-                            <input class"texto_resposta_correta${i}" type="text" placeholder="Resposta correta" required>
-                            <input class"url_resposta_certa${i}" type="text" placeholder="URL da imagem" required>
-                        </div>
-                        <div class="form_question incorreto${i}">
-                            <h2>Respostas incorretas</h2>
-                            
-                        </div>
-                    </div>`; 
 
-            let incorreto = document.querySelector(`.incorreto${i}`);
-            
-            for(let j = 0; j < qtd_niveis.value; j++){
-                console.log("testando o for");
-                incorreto.innerHTML += `
-                            <input class"texto_resposta_errada${i}" type="text" placeholder="Resposta incorreta ${j+1}" required>
-                            <input class"url_resposta_errada${i}" type="text" placeholder="URL da imagem ${j+1}" required>`
+//----------------------------------------------------------------------------------------
+// Function: load_tela_3b()
+// Description: Loads tela_3b given 'current_user_created_quiz' global variable.
+//
+// Inputs: none
+//
+// Outputs: none
+//----------------------------------------------------------------------------------------
+function load_tela_3b() {
+    const DOM_tela3 = document.querySelector('.tela_3');
+    DOM_tela3.innerHTML = `
+                            <div class="tela_3b">
 
-            }
-        
+                            </div>
+                          `;
+    const DOM_tela3b = DOM_tela3.querySelector('.tela_3b');
+    DOM_tela3b.innerHTML += `<h1>Crie suas perguntas</h1>`;
+    const form_container_divs = get_form_container_divs_tela3b();
+
+    for (let i = 0; i < form_container_divs.length; i++) {
+        DOM_tela3b.innerHTML += form_container_divs[i];
+    }
+    DOM_tela3b.innerHTML += `<button onclick="proceed_to_create_levels()">
+                                Prosseguir para criar níveis
+                            </button>`;
+}
+
+//----------------------------------------------------------------------------------------
+// Function: valid_hexadecimal_color(color_string)
+// Description: Checks if input string is a valid hexadecimal color
+//
+// Inputs:
+// - color_string: String representing a hexadecimal color.
+//
+// Outputs:
+// - is_valid: true if input is a valid hexadecimal color (false otherwise)
+//----------------------------------------------------------------------------------------
+function valid_hexadecimal_color(color_string){
+    if(color_string[0] != '#') return false;
+    if(color_string.length != 7) return false;
+
+    const hex_letters = ['A','B','C','D','E','F'];
+
+    for (let i = 1; i < color_string.length; i++) {
+        let c = color_string[i];
+        if (!( (Number(c) >=0 && Number(c)<=9) || hex_letters.includes(c.toUpperCase()) )){
+            return false;
         }
-        
-        galery_ask.innerHTML += `<button onclick="create_ask()">Prosseguir para criar perguntas</button>`
+    }
+    return true;
+}
 
-    
+//----------------------------------------------------------------------------------------
+// Function: validate_inputs_tela_3b() --------TODO--------
+// Description: Checks if inputs on screen 3b are valid (question creation screen).
+//
+// Inputs: none
+//
+// Outputs:
+// - is_valid: true if all inputs in screen 3b are valid (false otherwise)
+//----------------------------------------------------------------------------------------
+function validate_inputs_tela_3b() {
+    let is_valid;
+    let array_with_indexes_of_valid_incorrect_answers = [];
 
+    const DOM_tela3 = document.querySelector('.tela_3');
+    const DOM_form_containers = DOM_tela3.querySelectorAll('.form_container')
+
+    for (let i = 0; i < current_user_created_quiz.questions.length; i++) {
+        let DOM_question = DOM_form_containers[i].querySelectorAll('.form_question')[0];
+        let DOM_correct_answer = DOM_form_containers[i].querySelectorAll('.form_question')[1];
+        let DOM_incorrect_answers = DOM_form_containers[i].querySelectorAll('.form_question')[2];
+
+        let DOM_question_text = DOM_question.querySelectorAll('input')[0];
+        let DOM_question_color = DOM_question.querySelectorAll('input')[1];
+        let DOM_correct_answer_text = DOM_correct_answer.querySelectorAll('input')[0];
+        let DOM_correct_answer_url = DOM_correct_answer.querySelectorAll('input')[1];
+        let DOM_incorrect_answers_inputs = DOM_incorrect_answers.querySelectorAll('input');
+
+        // Validate question text
+        if (DOM_question_text.value.length <= 20){
+            is_valid = false;
+            //DOM_form_containers.querySelectorAll('input').forEach((e) => {e.value=''});
+            alert('O texto de cada pergunta deve ter pelo menos 20 caracteres!');
+            return is_valid;
+        }
+        // Validate question color
+        if (!valid_hexadecimal_color(DOM_question_color.value)){
+            is_valid = false;
+            //DOM_form_containers.querySelectorAll('input').forEach((e) => {e.value=''});
+            alert('A cor da pergunta deve ser um hexadecimal válido');
+            return is_valid;
+        }
+        // Validate correct answer text
+        if (DOM_correct_answer_text.value === ''){
+            is_valid = false;
+            //DOM_form_containers.querySelectorAll('input').forEach((e) => {e.value=''});
+            alert('O texto da resposta correta não pode estar vazio!');
+            return is_valid;
+        }
+        // Validate correct answer image URL
+        if (!valid_url(DOM_correct_answer_url.value)){
+            is_valid = false;
+            //DOM_form_containers.querySelectorAll('input').forEach((e) => {e.value=''});
+            alert('As URLs das imagens de repostas devem ser válidas!');
+            return is_valid;
+        }
+        // Validate incorrect answers
+        let aux = [];
+        let cont_valid_incorrect_answers = 0;
+        for (let j = 0; j <= 4; j=j+2) {
+            let DOM_texto_resposta_incorreta = DOM_incorrect_answers_inputs[j];
+            let DOM_url_resposta_incorreta = DOM_incorrect_answers_inputs[j+1];
+            if(DOM_texto_resposta_incorreta.value != '' && valid_url(DOM_url_resposta_incorreta.value)){
+                aux.push(j);
+                cont_valid_incorrect_answers++;
+            }
+        }
+        if (cont_valid_incorrect_answers === 0){
+            is_valid = false;
+            //DOM_form_containers.querySelectorAll('input').forEach((e) => {e.value=''});
+            alert('Deve haver pelo menos uma resposta incorreta!');
+            return is_valid;
+        }
+        array_with_indexes_of_valid_incorrect_answers.push(aux);
     }
 
+    is_valid = true;
+    // Store current user-created Quizz on global variable
+    for (let k = 0; k < current_user_created_quiz.questions.length; k++) {
+        let DOM_question = DOM_form_containers[k].querySelectorAll('.form_question')[0];
+        let DOM_correct_answer = DOM_form_containers[k].querySelectorAll('.form_question')[1];
+        let DOM_incorrect_answers = DOM_form_containers[k].querySelectorAll('.form_question')[2];
+
+        let DOM_question_text = DOM_question.querySelectorAll('input')[0];
+        let DOM_question_color = DOM_question.querySelectorAll('input')[1];
+        let DOM_correct_answer_text = DOM_correct_answer.querySelectorAll('input')[0];
+        let DOM_correct_answer_url = DOM_correct_answer.querySelectorAll('input')[1];
+        let DOM_incorrect_answers_inputs = DOM_incorrect_answers.querySelectorAll('input');
+
+        let answers = [];
+        // Store Correct Answer
+        answers.push({
+                        text: DOM_correct_answer_text.value,
+                        image: DOM_correct_answer_url.value,
+                        isCorrectAnswer: true
+                    });
+        // Store Incorrect Answers
+        for (let m = 0; m < array_with_indexes_of_valid_incorrect_answers[k].length; m++) {
+            const index = array_with_indexes_of_valid_incorrect_answers[k][m];
+            answers.push({
+                text: DOM_incorrect_answers_inputs[index].value,
+                image: DOM_incorrect_answers_inputs[index+1].value,
+                isCorrectAnswer: false
+            });
+        }
+        // Store Question
+        let question = {
+                        title: DOM_question_text.value,
+                        color: DOM_question_color.value,
+                        answers: answers
+                        }
+        current_user_created_quiz.questions[k] = question
+    }
+
+    console.log(current_user_created_quiz);
+    return is_valid;
 }
+
+
+//----------------------------------------------------------------------------------------
+// Function: proceed_to_create_levels()
+// Description: Get user inputs for Quizz questions and checks if all inputs are valid.
+//              Displays alerts in case any input is invalid.
+//              Calls function load_tela_3c().
+//
+// Inputs: none
+//
+// Outputs: none;
+//----------------------------------------------------------------------------------------
+function proceed_to_create_levels() {
+    // Validates inputs from screen 3b (question creation screen)
+    let is_valid = validate_inputs_tela_3b();
+    if (!is_valid) return;
+
+    // Renders screen 3c (levels creation screen)
+    load_tela_3c();
+
+}
+
+//----------------------------------------------------------------------------------------
+// Function: load_tela_3c() --------TODO--------
+// Description: Loads tela_3c given 'current_user_created_quiz' global variable.
+//
+// Inputs: none
+//
+// Outputs: none
+//----------------------------------------------------------------------------------------
+function load_tela_3c(){
+
+}
+
+
+
 
 function create_ask(){
     let url_esta_certa;
