@@ -2,9 +2,9 @@
 let API_quizzes_list = [];
 let my_quizzes_list = [];
 let selected_quiz_index;
+let current_quiz_container_name;
 let current_quiz;
 let user_answers_array = [];
-let my_quizzes_counter = 0;
 const API_server = "https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes";
 
 let DOM_page_content = document.querySelector('.page_content');
@@ -12,6 +12,25 @@ let DOM_API_quizzes_gallery;
 
 
 // -------------------------- Functions --------------------------
+
+//----------------------------------------------------------------------------------------
+// Function: render_my_quizzes()
+// Description: Renders user-created Quizzes (if there are none, renders 'empty_quiz_container')
+//
+// Inputs: none
+//
+// Outputs:
+//----------------------------------------------------------------------------------------
+function render_my_quizzes(){
+    if(my_quizzes_list.length > 0){
+        document.querySelector(".empty_quiz_container").classList.add("hidden");
+        document.querySelectorAll(".quiz_container")[0].classList.remove("hidden");
+    }
+    else{
+        document.querySelector(".empty_quiz_container").classList.remove("hidden");
+        document.querySelectorAll(".quiz_container")[0].classList.add("hidden");
+    }
+}
 
 //----------------------------------------------------------------------------------------
 // Function: render_API_quizzes(object)
@@ -37,8 +56,8 @@ function render_API_quizzes(object){
                             <img src="${API_quizzes_list[i].image}">
                         </div>
                         <h1>${API_quizzes_list[i].title}</h1>
-                    </div>`
-    }
+                        </div>`
+                    }
 }
 
 //----------------------------------------------------------------------------------------
@@ -110,15 +129,6 @@ function load_tela_2() {
                             <div class="questions_container">
                                 
                             </div>
-                            <div class="quiz_result">
-
-                            </div>
-                            <button class="reset_quiz">
-                                Reiniciar Quizz
-                            </button>
-                            <button class="back_home">
-                                Voltar para home
-                            </button>
                         </div>`;
     DOM_page_content.innerHTML = tela_2_div;
 }
@@ -137,6 +147,7 @@ function load_tela_2() {
 // Outputs: none;
 //----------------------------------------------------------------------------------------
 function click_quiz(quiz_container_name, index){
+    current_quiz_container_name = quiz_container_name;
     selected_quiz_index = index;
     load_tela_2();
     render_quiz_tela2(quiz_container_name, index);
@@ -327,29 +338,40 @@ function display_quiz_result() {
                                             <p>${quiz_levels[user_level_index].text}</p>
                                         </div>
                                     </div>
+                                    <button class="reset_quiz" onclick="restart_current_quizz()">
+                                        Reiniciar Quizz
+                                    </button>
+                                    <button class="back_home" onclick="go_to_homepage()">
+                                        Voltar para home
+                                    </button>
                                     `;
 }
 
+
 //----------------------------------------------------------------------------------------
-// Function: render_my_quizzes()
-// Description: Renders user-created Quizzes (if there are none, renders 'empty_quiz_container')
+// Function: restart_current_quizz()
+// Description: Restarts current Quizz and scrolls back to top of the page
 //
 // Inputs: none
 //
 // Outputs:
 //----------------------------------------------------------------------------------------
-function render_my_quizzes(){
-    if(my_quizzes_list.length > 0){
-        document.querySelector(".empty_quiz_container").classList.add("hidden");
-        document.querySelectorAll(".quiz_container")[0].classList.remove("hidden");
-    }
-    else{
-        document.querySelector(".empty_quiz_container").classList.remove("hidden");
-        document.querySelectorAll(".quiz_container")[0].classList.add("hidden");
-    }
+function restart_current_quizz() {
+    load_tela_2();
+    render_quiz_tela2(current_quiz_container_name, selected_quiz_index);
+    user_answers_array = [];
 }
 
+function go_to_homepage() {
+    API_quizzes_list = [];
+    my_quizzes_list = [];
+    selected_quiz_index = undefined;
+    current_quiz_container_name = undefined;
+    current_quiz = undefined;
+    user_answers_array = [];
 
+    load_tela_1();
+}
 
 
 
