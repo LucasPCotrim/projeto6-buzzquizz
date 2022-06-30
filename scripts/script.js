@@ -1,6 +1,8 @@
 let every_quiz_gallery = document.querySelector('.quiz_gallery');
 let selected_quiz;
 let counter_my_quizes = 1;
+let perguntas_qtd;
+let niveis_qtd;
 
 get_server();
 
@@ -94,42 +96,139 @@ check_my_quizzes()
 function add_quiz(){
     console.log("foi");
     document.querySelector(".tela_1").classList.add("hidden");
-    document.querySelector(".tela_3").classList.remove("hidden");
+    document.querySelector(".tela_3a").classList.remove("hidden");
 }
 
 function create_quiz(){
+    let cont = 0;
     const text = document.querySelector(".text");
     const url = document.querySelector(".url");
     const qtd_perguntas = document.querySelector(".qtd_perguntas");
     const qtd_niveis = document.querySelector(".qtd_niveis");
-    if(text.value.length >= 20){
-        console.log("titulo ta ok")
+    if(text.value.length >= 20 && qtd_perguntas.value >= 3 && qtd_niveis.value >= 2){
+        try {
+            let verifica = new URL(url.value)
+            console.log("tudo ok")
+            cont = 1;
+            perguntas_qtd = qtd_perguntas.value;
+            niveis_qtd = qtd_niveis.value;
+          } catch(err) {
+            text.value = "";
+            url.value = "";
+            qtd_niveis.value = "";
+            qtd_perguntas.value = "";
+            alert("insira as informações corretamente");
+          }
 
     } else{
         text.value = "";
-        alert("titulo deve ter entre 20 e 65 caracteristicas");
-    }
-
-    try {
-        let verifica = new URL(url.value)
-        console.log("Valid URL!")
-      } catch(err) {
-          console.log("Invalid URL!")
-          url.value = "";
-          alert("url invalida");
-      }
-
-    if(qtd_perguntas.value >= 3){
-        console.log("qtd perguntas está ok")
-    } else{
-        alert("qtd de perguntas menor que 3");
-        qtd_perguntas.value = ";"
-    }
-
-    if(qtd_niveis.value >= 2){
-        console.log("qtd niveis está ok")
-    } else{
-        alert("qtd de niveis menor que 2");
+        url.value = "";
         qtd_niveis.value = "";
+        qtd_perguntas.value = "";
+        alert("insira as informações corretamente");
+    }
+
+    if(cont = 1){
+
+        document.querySelector(".tela_3a").classList.add("hidden");
+        document.querySelector(".tela_3b").classList.remove("hidden");
+        let galery_ask = document.querySelector(".tela_3b");
+        galery_ask.innerHTML += `<h1>Crie suas perguntas</h1>`
+        
+        for (let i = 0; i < qtd_perguntas.value; i++) {
+           
+            galery_ask.innerHTML += `
+                    <div class="form_container">
+                        <div class="form_question pergunta">
+                            <h2>Pergunta ${i+1}</h2>
+                            <input class"texto_pergunta${i}" type="text" placeholder="Texto da pergunta" required>
+                            <input class"cor_fundo${i}" type="text" placeholder="Cor de fundo da pergunta" required>
+                        </div>
+                        <div class="form_question correto">
+                            <h2>Resposta correta</h2>
+                            <input class"texto_resposta_correta${i}" type="text" placeholder="Resposta correta" required>
+                            <input class"url_resposta_certa${i}" type="text" placeholder="URL da imagem" required>
+                        </div>
+                        <div class="form_question incorreto${i}">
+                            <h2>Respostas incorretas</h2>
+                            
+                        </div>
+                    </div>`; 
+
+            let incorreto = document.querySelector(`.incorreto${i}`);
+            
+            for(let j = 0; j < qtd_niveis.value; j++){
+                console.log("testando o for");
+                incorreto.innerHTML += `
+                            <input class"texto_resposta_errada${i}" type="text" placeholder="Resposta incorreta ${j+1}" required>
+                            <input class"url_resposta_errada${i}" type="text" placeholder="URL da imagem ${j+1}" required>`
+
+            }
+        
+        }
+        
+        galery_ask.innerHTML += `<button onclick="create_ask()">Prosseguir para criar perguntas</button>`
+
+    
+
+    }
+
+}
+
+function create_ask(){
+    let url_esta_certa;
+    let tudo_ok;
+    let tudo_ok2;
+    for(let i =0; i < perguntas_qtd; i++){
+
+        let texto_pergunta = document.querySelector(`.texto_pergunta${i}`).value;
+        console.log(texto_pergunta)
+        let texto_resposta = document.querySelector(`.texto_resposta${i}`).value;
+        console.log(texto_resposta)
+        let cor_fundo = document.querySelector(`.cor_fundo${i}`).value;
+        console.log(cor_fundo)
+        let url_resposta_certa = document.querySelector(`.url_resposta_certa${i}`).value;
+        console.log(url_resposta_certa)
+
+        try {
+            let ver = new URL(url_resposta_certa)
+            console.log("tudo ok")
+            url_esta_certa = 1;
+          } catch(err) {
+            url_esta_certa = 0;
+          }
+
+        
+        if(texto_pergunta.length >= 20 && texto_resposta != "" && cor_fundo[0] == "#" && cor_fundo.length == 7 && url_esta_certa == 1 ){
+            tudo_ok = 1;
+        }
+        else {
+            tudo_ok = 0;
+        }
+
+        for(let j = 0; j < niveis_qtd; j++){
+            
+            let url_resposta_errada = document.querySelector(`.url_resposta_errada${i}`).value;
+
+            try {
+                let veri = new URL(url_resposta_errada.value)
+                console.log("tudo ok")
+                url_esta_certa = 1;
+              } catch(err) {
+                url_esta_certa = 0;
+              }
+
+            if(url_esta_certa == 1){
+                tudo_ok2 = 1;
+            } else{
+                tudo_ok2 == 0;
+            }
+        }
+    }
+
+    if( tudo_ok == 1 && tudo_ok2 == 1){
+        alert("ok");
+    } else{
+        alert("insira as informações corretamente");
     }
 }
