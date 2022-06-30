@@ -2,6 +2,8 @@
 let API_quizzes_list = [];
 let my_quizzes_list = [];
 let selected_quiz_index;
+let current_quiz;
+let user_answers_array = [];
 let my_quizzes_counter = 0;
 
 let DOM_page_content = document.querySelector('.page_content');
@@ -90,11 +92,12 @@ function load_tela_2() {
 }
 
 
-// quiz_container_name == 'API_quizzes', 'my_quizzes'
+// quiz_container_name == 'API_quizzes' ou 'my_quizzes'
 function click_quiz(quiz_container_name, index){
     selected_quiz_index = index;
     load_tela_2();
     render_quiz_tela2(quiz_container_name, index);
+    user_answers_array = [];
 }
 
 function render_quiz_tela2(quiz_container_name, index){
@@ -107,22 +110,23 @@ function render_quiz_tela2(quiz_container_name, index){
     else if(quiz_container_name=='my_quizzes'){
         quiz_array = my_quizzes_list;
     }
+    current_quiz = quiz_array[index];
 
     // Fill quiz_title
     document.querySelector('.quiz_title').innerHTML += `<div class="quiz_title_image">
-                                                            <img src="${quiz_array[index].image}">
+                                                            <img src="${current_quiz.image}">
                                                         </div>
-                                                        <h1>${quiz_array[index].title}</h1>
+                                                        <h1>${current_quiz.title}</h1>
                                                         `;
     
     let questions_container = document.querySelector('.questions_container');
     let answers;
-    let questions = quiz_array[index].questions;
 
+    let questions = current_quiz.questions;
     // Fill questions_container
     for(let i = 0; i < questions.length; i++){
         questions_container.innerHTML += `
-                        <div class="question">
+                        <div class="question hidden">
                             <div class="question_title" style="background-color:${questions[i].color};">
                                 <h1>${questions[i].title}</h1>
                             </div>
@@ -135,19 +139,75 @@ function render_quiz_tela2(quiz_container_name, index){
         // Fill question_alternatives
         for(let j = 0; j < questions[i].answers.length; j++){
             answers.innerHTML += `
-                                <div class="alternative">
+                                <div class="alternative" onclick="select_alternative(${i},${j})">
                                     <img src="${questions[i].answers[j].image}">
                                     <h2>${questions[i].answers[j].text}</h2>
                                 </div>`;     
         }
+    }
+    console.log(questions_container.querySelector('.question').classList);
+    questions_container.querySelector('.question').classList.remove('hidden');
+    console.log(questions_container.querySelector('.question').classList);
+    
+}
+
+
+
+
+
+function select_alternative(question_index, alternative_index){
+
+    // Check if user already entered an answer to this question
+    for (let k = 0; k < user_answers_array.length; k++) {
+        if(user_answers_array[k].question == question_index) return;
+    }
+
+    // Save user's chosen answer
+    user_answers_array.push({
+                            question: question_index,
+                            chosen_alternative: alternative_index
+                            });
+
+    const questions_container = document.querySelector('.questions_container');
+    const questions = questions_container.querySelectorAll('.question');
+    const question = questions[question_index];
+    const alternatives = question.querySelectorAll('.alternative');
+
+    // Update styles of alternatives
+    for (let i = 0; i < alternatives.length; i++) {
+        alternatives[i].style.cursor = 'initial';
+        if (i != alternative_index){
+            alternatives[i].style.opacity = '0.3';
+        }
+        if (current_quiz.questions[question_index].answers[i].isCorrectAnswer){
+            alternatives[i].querySelector('h2').style.color = '#009C22';
+        }
+        else {
+            alternatives[i].querySelector('h2').style.color = '#FF0B0B';
+        }
+    }
+    
+    // There are still more unanswered questions
+    if(user_answers_array.length < current_quiz.questions.length){
+        const next_question = questions[question_index+1];
+        setTimeout(() => {
+            next_question.classList.remove('hidden');
+            next_question.scrollIntoView({behavior: 'smooth'});
+        }, 2000);
+        
+    }
+    // User answered all qeustions
+    else{
+        alert('All questions answered')
     }
 }
 
 
 
 
+
 function render_my_quizzes(){
-    if(my_quizzes_counter > 0){
+    if(my_quizzes_list.length > 0){
         document.querySelector(".empty_quiz_container").classList.add("hidden");
         document.querySelectorAll(".quiz_container")[0].classList.remove("hidden");
     }
