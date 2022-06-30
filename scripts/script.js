@@ -1,98 +1,182 @@
-let every_quiz_gallery = document.querySelector('.quiz_gallery');
-let selected_quiz;
-let counter_my_quizes = 1;
+// -------------------------- Global Variables --------------------------
+let API_quizzes_list = [];
+let my_quizzes_list = [];
+let selected_quiz_index;
+let my_quizzes_counter = 0;
 
-get_server();
+let DOM_page_content = document.querySelector('.page_content');
+let DOM_API_quizzes_gallery;
 
-function get_server(){
-    const promise = axios.get("https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes");
-    promise.then(reneder_quiz);
+
+// -------------------------- Functions --------------------------
+
+
+function render_API_quizzes(object){
+    API_quizzes_list = object.data;
+    console.log('API_quizzes_list');
+    console.log(API_quizzes_list);
+
+    DOM_API_quizzes_gallery = document.querySelector('.quiz_gallery');
+    
+    for(let i = 0; i < API_quizzes_list.length; i++){
+        DOM_API_quizzes_gallery.innerHTML += `
+                    <div class="quiz" onclick="click_quiz('API_quizzes', ${i})">
+                        <div class="quiz_image">
+                            <img src="${API_quizzes_list[i].image}">
+                        </div>
+                        <h1>${API_quizzes_list[i].title}</h1>
+                    </div>`
+    }
 }
 
-function click_quiz(indice){
-    selected_quiz = indice;
-    document.querySelector(".tela_1").classList.add("hidden");
-    document.querySelector(".tela_2").classList.remove("hidden");
+
+function get_API_quizzes(){
     const promise = axios.get("https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes");
-    promise.then(reneder_quiz_tela2);
+    promise.then(render_API_quizzes);
 }
 
-function reneder_quiz_tela2(object){
-    window.scroll({top: 0, left: 0, behavior: 'smooth' });
-    const array = object.data;
-    let quiz_header = document.querySelector('.quiz_title');
-    quiz_header.innerHTML += `
-                <div class="quiz_title_image">
-                    <img src="${array[selected_quiz].image}" alt="">
-                </div>
-                <h1>${array[selected_quiz].title}</h1>`;
+
+function load_tela_1() {
+    const tela_1_div = `<div class="tela_1">
+                            <section class="empty_quiz_container">
+                                <h1>Você não criou nenhum quizz ainda :(</h1>
+                                <button onclick="add_quiz()">Criar Quizz</button>
+                            </section>
+                            <section class="quiz_container hidden" id="my_quizzes_container">
+                                <div class="my_quizzes_header">
+                                    <p>Seus Quizzes</p>
+                                    <ion-icon name="add-circle" class="add_quiz_small_button" onclick="add_quiz()"></ion-icon>
+                                </div>
+                                <div class="my_quiz_gallery">
+                                    <div class="quiz">
+                                        <div class="quiz_image">
+                                            <img src="imgs/harry_potter.png" alt="harry_potter picture">
+                                        </div>
+                                        <h1>O quão Potterhead é você?</h1>
+                                    </div>
+                                </div>
+                            </section>
+                            <section class="quiz_container" id="API_quizzes_container">
+                                <h1>Todos os Quizzes</h1>
+                                <div class="quiz_gallery">
+
+                                </div>
+                            </section>
+                        </div>`;
+    DOM_page_content.innerHTML = tela_1_div;
+    get_API_quizzes();
+    render_my_quizzes();
+}
+
+function load_tela_2() {
+    const tela_2_div = `<div class="tela_2">
+                            <div class="quiz_title">
+                                
+                            </div>
+                            <div class="questions_container">
+                                
+                            </div>
+                            <div class="quiz_result">
+
+                            </div>
+                            <button class="reset_quiz">
+                                Reiniciar Quizz
+                            </button>
+                            <button class="back_home">
+                                Voltar para home
+                            </button>
+                        </div>`;
+    DOM_page_content.innerHTML = tela_2_div;
+}
+
+
+// quiz_container_name == 'API_quizzes', 'my_quizzes'
+function click_quiz(quiz_container_name, index){
+    selected_quiz_index = index;
+    load_tela_2();
+    render_quiz_tela2(quiz_container_name, index);
+}
+
+function render_quiz_tela2(quiz_container_name, index){
+    window.scroll({top: 0, left: 0, behavior: 'auto' });
+
+    let quiz_array;
+    if (quiz_container_name=='API_quizzes'){
+        quiz_array = API_quizzes_list;
+    }
+    else if(quiz_container_name=='my_quizzes'){
+        quiz_array = my_quizzes_list;
+    }
+
+    // Fill quiz_title
+    document.querySelector('.quiz_title').innerHTML += `<div class="quiz_title_image">
+                                                            <img src="${quiz_array[index].image}">
+                                                        </div>
+                                                        <h1>${quiz_array[index].title}</h1>
+                                                        `;
     
     let questions_container = document.querySelector('.questions_container');
     let answers;
-    let question_title;
-    console.log(array[selected_quiz].questions.length)
-    let questions = array[selected_quiz].questions;
+    let questions = quiz_array[index].questions;
+
+    // Fill questions_container
     for(let i = 0; i < questions.length; i++){
-        console.log(i);
         questions_container.innerHTML += `
-                <div class="question">
-                    <div class="question_title">
-                        <h1>${questions[i].title}</h1>
-                    </div>
-                    <div class="question_alternatives qs${i}">
+                        <div class="question">
+                            <div class="question_title" style="background-color:${questions[i].color};">
+                                <h1>${questions[i].title}</h1>
+                            </div>
+                            <div class="question_alternatives">
 
-                    </div>
-                </div>`;
+                            </div>
+                        </div>`;
+        answers = questions_container.lastChild.querySelector('.question_alternatives');
 
-        answers = document.querySelector(`.qs${i}`);
-        question_titles = questions_container.querySelectorAll('.question_title');
-        console.log('question_titles');
-        console.log(question_titles);
-        console.log('${questions[i].color}');
-        console.log(`${questions[i].color}`);
-        console.log('i', i);
-        question_titles[i].style.backgroundColor = `${questions[i].color}`;
-
+        // Fill question_alternatives
         for(let j = 0; j < questions[i].answers.length; j++){
-            console.log(questions[i].answers.length)
             answers.innerHTML += `
-                    <div class="alternative">
-                        <img src="${questions[i].answers[j].image}">
-                        <h2>${questions[i].answers[j].text}</h2>
-                    </div>`
-                    
+                                <div class="alternative">
+                                    <img src="${questions[i].answers[j].image}">
+                                    <h2>${questions[i].answers[j].text}</h2>
+                                </div>`;     
         }
-
-    }
-    
-}
-
-function reneder_quiz(object){
-    
-    const array = object.data;
-    
-    for(let i = 0; i < array.length; i++){
-        every_quiz_gallery.innerHTML += `
-                    <div class="quiz" onclick="click_quiz(${i})">
-                        <div class="quiz_image">
-                            <img src="${array[i].image}">
-                        </div>
-                        <h1>${array[i].title}</h1>
-                    </div>`
     }
 }
 
 
-function check_my_quizzes(){
-    if(counter_my_quizes > 0){
+
+
+function render_my_quizzes(){
+    if(my_quizzes_counter > 0){
         document.querySelector(".empty_quiz_container").classList.add("hidden");
-        document.querySelector(".add_quiz_small").classList.remove("hidden");
+        document.querySelectorAll(".quiz_container")[0].classList.remove("hidden");
+    }
+    else{
+        document.querySelector(".empty_quiz_container").classList.remove("hidden");
+        document.querySelectorAll(".quiz_container")[0].classList.add("hidden");
     }
 }
-check_my_quizzes()
+
+
+
 
 function add_quiz(){
-    console.log("foi");
     document.querySelector(".tela_1").classList.add("hidden");
     document.querySelector(".tela_3").classList.remove("hidden");
 }
+
+
+
+
+
+
+
+
+
+
+// -------------------------- Main --------------------------
+load_tela_1();
+
+
+
+
