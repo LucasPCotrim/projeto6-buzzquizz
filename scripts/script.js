@@ -955,7 +955,7 @@ function proceed_to_finalize_quiz() {
     
     alert("tudo ok")
     let promise = axios.post(API_server,current_user_created_quiz)
-    promise.then(save_quizz_API)
+    promise.then(save_quizz_LOCAL)
 
 }
 
@@ -992,11 +992,14 @@ function load_tela_3d(){
 }
 
 
+    
+function save_quizz_LOCAL(object){
+    alert("foi");
+    const objectSerializado = JSON.stringify(object);
+    localStorage.setItem(`${object.id}`, objectSerializado);
 
-function save_quizz_API() {
-    console.log('load_tela_3d()');
     // Render screen 3d (quizz finalization screen)
-    load_tela_3d()
+    load_tela_3d();
 }
 
 
