@@ -6,7 +6,7 @@ let current_quiz_container_name;
 let current_quiz;
 let user_answers_array = [];
 let current_user_created_quiz;
-const API_server = "https://mock-api.driven.com.br/api/v7/buzzquizz/quizzes"; //"https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes"
+const API_server = "https://mock-api.driven.com.br/api/v7/buzzquizz/quizzes"; //old server: "https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes"
 
 
 let DOM_page_content = document.querySelector('.page_content');
@@ -954,7 +954,7 @@ function proceed_to_finalize_quiz() {
 
     // Renders screen 3d (quizz finalization screen)
     alert("tudo ok")
-    let promise = axios.post("https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes",current_user_created_quiz)
+    let promise = axios.post(API_server,current_user_created_quiz)
     promise.then(save_quizz_LOCAL)
 
 }
