@@ -1,8 +1,4 @@
 // -------------------------- Global Variables --------------------------
-
-let perguntas_qtd;
-let niveis_qtd;
-
 let API_quizzes_list = [];
 let my_quizzes_list = [];
 let selected_quiz_index;
@@ -63,7 +59,7 @@ function render_API_quizzes(object){
                         </div>
                         <h1>${API_quizzes_list[i].title}</h1>
                         </div>`
-                    }
+    }
 }
 
 //----------------------------------------------------------------------------------------
@@ -99,12 +95,7 @@ function load_tela_1() {
                                     <ion-icon name="add-circle" class="add_quiz_small_button" onclick="load_tela_3()"></ion-icon>
                                 </div>
                                 <div class="my_quiz_gallery">
-                                    <div class="quiz">
-                                        <div class="quiz_image">
-                                            <img src="imgs/harry_potter.png" alt="harry_potter picture">
-                                        </div>
-                                        <h1>O quão Potterhead é você?</h1>
-                                    </div>
+                                    
                                 </div>
                             </section>
                             <section class="quiz_container" id="API_quizzes_container">
@@ -267,7 +258,7 @@ function select_alternative(question_index, alternative_index){
     
     // There are still more unanswered questions
     if(user_answers_array.length < current_quiz.questions.length){
-        const next_question = questions[question_index+1];
+        const next_question = questions[question_index + 1];
         setTimeout(() => {
             next_question.classList.remove('hidden');
             next_question.scrollIntoView({behavior: 'smooth'});
@@ -452,42 +443,26 @@ function validate_inputs_tela_3a() {
     if (DOM_quiz_title.value.length <= 20){
         is_valid = false;
         DOM_quiz_title.value = "";
-        DOM_url.value = "";
-        DOM_n_questions.value = "";
-        DOM_n_levels.value = "";
         alert('O título do quizz deve ter pelo meno 20 caracteres!');
         return is_valid;
     }
     // Check if image URL is valid
     if (!valid_url(DOM_url.value)){
         is_valid = false;
-        DOM_quiz_title.value = "";
         DOM_url.value = "";
-        DOM_n_questions.value = "";
-        DOM_n_levels.value = "";
         alert('A url da imagem deve ser válida!');
         return is_valid;
     }
     // Check if number of questions is integer and >= 3
-    console.log('DOM_n_questions.value = ');
-    console.log(DOM_n_questions.value);
     if (Number(DOM_n_questions.value) % 1 != 0 || Number(DOM_n_questions.value) < 3){
         is_valid = false;
-        DOM_quiz_title.value = "";
-        DOM_url.value = "";
         DOM_n_questions.value = "";
-        DOM_n_levels.value = "";
         alert('O número de perguntas deve ser maior ou igual a 3!');
         return is_valid;
     }
     // Check if number of levels is integer and >= 2
-    console.log('DOM_n_levels.value = ');
-    console.log(DOM_n_levels.value);
     if (Number(DOM_n_levels.value) % 1 != 0 || Number(DOM_n_levels.value) < 2){
         is_valid = false;
-        DOM_quiz_title.value = "";
-        DOM_url.value = "";
-        DOM_n_questions.value = "";
         DOM_n_levels.value = "";
         alert('O número de níveis deve ser maior ou igual a 2!');
         return is_valid;
@@ -621,7 +596,7 @@ function valid_hexadecimal_color(color_string){
 }
 
 //----------------------------------------------------------------------------------------
-// Function: validate_inputs_tela_3b() --------TODO--------
+// Function: validate_inputs_tela_3b()
 // Description: Checks if inputs on screen 3b are valid (question creation screen).
 //
 // Inputs: none
@@ -650,28 +625,31 @@ function validate_inputs_tela_3b() {
         // Validate question text
         if (DOM_question_text.value.length <= 20){
             is_valid = false;
-            //DOM_form_containers.querySelectorAll('input').forEach((e) => {e.value=''});
+            DOM_question_text.value='';
+            DOM_question_text.scrollIntoView({behavior: 'smooth'});
             alert('O texto de cada pergunta deve ter pelo menos 20 caracteres!');
             return is_valid;
         }
         // Validate question color
         if (!valid_hexadecimal_color(DOM_question_color.value)){
             is_valid = false;
-            //DOM_form_containers.querySelectorAll('input').forEach((e) => {e.value=''});
+            DOM_question_color.value = '';
+            DOM_question_color.scrollIntoView({behavior: 'smooth'});
             alert('A cor da pergunta deve ser um hexadecimal válido');
             return is_valid;
         }
         // Validate correct answer text
         if (DOM_correct_answer_text.value === ''){
             is_valid = false;
-            //DOM_form_containers.querySelectorAll('input').forEach((e) => {e.value=''});
+            DOM_correct_answer_text.scrollIntoView({behavior: 'smooth'});
             alert('O texto da resposta correta não pode estar vazio!');
             return is_valid;
         }
         // Validate correct answer image URL
         if (!valid_url(DOM_correct_answer_url.value)){
             is_valid = false;
-            //DOM_form_containers.querySelectorAll('input').forEach((e) => {e.value=''});
+            DOM_correct_answer_url.value = '';
+            DOM_correct_answer_url.scrollIntoView({behavior: 'smooth'});
             alert('As URLs das imagens de repostas devem ser válidas!');
             return is_valid;
         }
@@ -685,10 +663,13 @@ function validate_inputs_tela_3b() {
                 aux.push(j);
                 cont_valid_incorrect_answers++;
             }
+            else DOM_texto_resposta_incorreta.scrollIntoView({behavior: 'smooth'});
         }
         if (cont_valid_incorrect_answers === 0){
             is_valid = false;
-            //DOM_form_containers.querySelectorAll('input').forEach((e) => {e.value=''});
+            for (let d = 0; d < DOM_incorrect_answers_inputs.length; d++) {
+                DOM_incorrect_answers_inputs[d].value = '';
+            }
             alert('Deve haver pelo menos uma resposta incorreta!');
             return is_valid;
         }
@@ -733,6 +714,7 @@ function validate_inputs_tela_3b() {
         current_user_created_quiz.questions[k] = question
     }
 
+    console.log('current_user_created_quiz');
     console.log(current_user_created_quiz);
     return is_valid;
 }
@@ -767,7 +749,7 @@ function proceed_to_create_levels() {
 // Outputs: none
 //----------------------------------------------------------------------------------------
 function load_tela_3c(){
-
+    alert('load_tela_3c()');
 }
 
 // -------------------------- Main --------------------------
