@@ -502,7 +502,7 @@ function proceed_to_create_questions(){
 
 //----------------------------------------------------------------------------------------
 // Function: get_form_container_divs_tela3b()
-// Description: Returns an array of strings representing divs for each form_container
+// Description: Returns an array of strings representing divs for each question form_container
 //              given global variable 'current_user_created_quiz'
 //
 // Inputs: none
@@ -742,74 +742,81 @@ function proceed_to_create_levels() {
 }
 
 //----------------------------------------------------------------------------------------
-// Function: load_tela_3c() --------TODO--------
-// Description: Loads tela_3c given 'current_user_created_quiz' global variable.
+// Function: get_form_container_divs_tela3c()
+// Description: Returns an array of strings representing divs for each level form_container
+//              given global variable 'current_user_created_quiz'
 //
 // Inputs: none
 //
-// Outputs: none
+// Outputs:
+// - form_container_divs: Array of strings representing each question form for screen 3b
 //----------------------------------------------------------------------------------------
-
-
-
-function load_tela_3c(){
-    const DOM_tela3 = document.querySelector('.tela_3');
-    DOM_tela3.innerHTML = `
-                            <div class="tela_3c">
-                                <div class="form_container">
-
-                                </div>
-                            </div>
-                          `;
-    const DOM_form_container = DOM_tela3.querySelector('.form_container');
-    DOM_form_container.innerHTML += `<h1>Agora decida os níveis</h1>`;
-    const form_container_divs = get_form_container_divs_tela3c();
-
-    for (let i = 0; i < form_container_divs.length; i++) {
-        DOM_form_container.innerHTML += form_container_divs[i];
-    }
-    DOM_form_container.innerHTML += `<button onclick="proceed_to_finalize_quiz()">
-                                Finalizar Quiz
-                            </button>`;
-    window.scroll({top: 0, left: 0, behavior: 'auto' });
-}
-
-
-
-
-
 function get_form_container_divs_tela3c(){
     let form_container_divs = [];
 
     for (let i = 0; i < current_user_created_quiz.levels.length; i++) {
-        const form_container_div = `
-                                    
+        const form_container_div = `<div class="form_container">
                                         <div class="form_question">
                                             <h2>Nível ${i + 1}</h2>
                                             <input type="text" placeholder="Título do nível" required>
                                             <input type="number" placeholder="% de acerto mínima" required>
                                             <input type="url" placeholder="URL da imagem do nível" required>
                                             <textarea name="Descrição" rows="10" placeholder="Descrição do nível" required></textarea>
-                                        </div>`;
+                                        </div>
+                                    </div>`;
         form_container_divs.push(form_container_div);
     }
     return form_container_divs;
 }
 
+//----------------------------------------------------------------------------------------
+// Function: load_tela_3c()
+// Description: Loads tela_3c given 'current_user_created_quiz' global variable.
+//
+// Inputs: none
+//
+// Outputs: none
+//----------------------------------------------------------------------------------------
+function load_tela_3c(){
+    const DOM_tela3 = document.querySelector('.tela_3');
+    DOM_tela3.innerHTML = `<div class="tela_3c">
+                            
+                           </div>`;
+    const DOM_tela3c = DOM_tela3.querySelector('.tela_3c')
+    DOM_tela3c.innerHTML += `<h1>Agora decida os níveis</h1>`;
+    const form_container_divs = get_form_container_divs_tela3c();
 
+    for (let i = 0; i < form_container_divs.length; i++) {
+        DOM_tela3c.innerHTML += form_container_divs[i];
+    }
+    DOM_tela3c.innerHTML += `<button onclick="proceed_to_finalize_quiz()">
+                                Finalizar Quiz
+                             </button>`;
+    window.scroll({top: 0, left: 0, behavior: 'auto' });
+}
+
+//----------------------------------------------------------------------------------------
+// Function: validate_inputs_tela_3c()
+// Description: Checks if inputs on screen 3c are valid (level creation screen).
+//
+// Inputs: none
+//
+// Outputs:
+// - is_valid: true if all inputs in screen 3c are valid (false otherwise)
+//----------------------------------------------------------------------------------------
 function validate_inputs_tela_3c() {
     let is_valid;
 
+    const DOM_tela3c = document.querySelector('.tela_3c');
+    const DOM_form_containers = DOM_tela3c.querySelectorAll('.form_container');
 
-    const DOM_form_container = document.querySelector('.form_container');
-    const DOM_level = DOM_form_container.querySelectorAll('.form_question')
+    for (let i = 0; i < current_user_created_quiz.levels.length; i++) {
 
-    for (let i = 0; i < current_user_created_quiz.questions.length; i++) {
-
-        let DOM_level_text = DOM_level[i].querySelector('input')[0];
-        let DOM_level_percentual = DOM_level[i].querySelector('input')[1];
-        let DOM_level_url = DOM_level[i].querySelector('input')[2];
-        let DOM_level_description = DOM_level[i].querySelector('textarea')[0];
+        let DOM_level = DOM_form_containers[i].querySelector('.form_question');
+        let DOM_level_text = DOM_level.querySelectorAll('input')[0];
+        let DOM_level_percentual = DOM_level.querySelectorAll('input')[1];
+        let DOM_level_url = DOM_level.querySelectorAll('input')[2];
+        let DOM_level_description = DOM_level.querySelector('textarea');
 
         // Validate level text
         if (DOM_level_text.value.length <= 10){
@@ -840,29 +847,30 @@ function validate_inputs_tela_3c() {
             is_valid = false;
             DOM_level_description.value='';
             DOM_level_description.scrollIntoView({behavior: 'smooth'});
-            alert('a descrição deve ter pelo menos 10 caracteres!');
+            alert('a descrição deve ter pelo menos 30 caracteres!');
             return is_valid;
         }
     }
 
     is_valid = true;
     // Store current user-level on global variable
-    for (let k = 0; k < current_user_created_quiz.questions.length; k++) {
+    for (let k = 0; k < current_user_created_quiz.levels.length; k++) {
 
-        let DOM_level_text = DOM_level[k].querySelector('input')[0];
-        let DOM_level_percentual = DOM_level[k].querySelector('input')[1];
-        let DOM_level_url = DOM_level[k].querySelectorAll('input')[2];
-        let DOM_level_description = DOM_level[k].querySelector('textarea')[0];
+        let DOM_level = DOM_form_containers[k].querySelector('.form_question');
 
-        let level = [];
+        let DOM_level_text = DOM_level.querySelectorAll('input')[0];
+        let DOM_level_percentual = DOM_level.querySelectorAll('input')[1];
+        let DOM_level_url = DOM_level.querySelectorAll('input')[2];
+        let DOM_level_description = DOM_level.querySelector('textarea');
+
         // Store level
-        level.push({
-                        title: DOM_level_text,
-                        image: DOM_level_url,
-                        text: DOM_level_description,
-                        minValue: DOM_level_percentual
-                    });
-        current_user_created_quiz.level[k] = level;
+        let level = {
+                    title: DOM_level_text.value,
+                    image: DOM_level_url.value,
+                    text: DOM_level_description.value,
+                    minValue: DOM_level_percentual.value
+        }
+        current_user_created_quiz.levels[k] = level;
     }
 
     console.log('current_user_created_quiz');
@@ -870,16 +878,27 @@ function validate_inputs_tela_3c() {
     return is_valid;
 }
 
-
+//----------------------------------------------------------------------------------------
+// Function: proceed_to_finalize_quiz()
+// Description: Get user inputs for Quizz levels and checks if all inputs are valid.
+//              Displays alerts in case any input is invalid.
+//              Calls function load_tela_3c().
+//
+// Inputs: none
+//
+// Outputs: none;
+//----------------------------------------------------------------------------------------
 function proceed_to_finalize_quiz() {
     // Validates inputs from screen 3c (question creation screen)
     let is_valid = validate_inputs_tela_3c();
     if (!is_valid) return;
 
-    // Renders screen 3c (levels creation screen)
+    // Renders screen 3d (quizz finalization screen)
     alert("tudo ok")
 
 }
+
+
 
 // -------------------------- Main --------------------------
 load_tela_1();
