@@ -517,6 +517,22 @@ button.back_home {
 .tela_3 .form_question input {
     max-width: 100%;
 }
+.tela_3 .form_question .form_question_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 74px;
+}
+.tela_3 .form_question .form_question_header h2 {
+    display: block;
+    margin: 0;
+}
+.tela_3 .form_question .form_question_header img {
+    width: 26px;
+    height: 23px;
+    cursor: pointer;
+}
 
 /* ------------------------- Tela 3b,c ------------------------- */
 
@@ -566,6 +582,16 @@ button.back_home {
 }
 .tela_3c textarea:focus::placeholder{
     opacity: 0;
+}
+
+.tela_3b .form_container, .tela_3c .form_container {
+    overflow-y: hidden;
+    height: 74px;
+    transition: all 1s ease-in-out;
+}
+#h_init {
+    height: initial;
+    margin-top: 33px;
 }
 
 
