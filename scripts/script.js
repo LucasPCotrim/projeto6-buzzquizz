@@ -568,6 +568,7 @@ function load_tela_3b() {
     DOM_tela3b.innerHTML += `<button onclick="proceed_to_create_levels()">
                                 Prosseguir para criar níveis
                             </button>`;
+    
 }
 
 //----------------------------------------------------------------------------------------
@@ -748,8 +749,136 @@ function proceed_to_create_levels() {
 //
 // Outputs: none
 //----------------------------------------------------------------------------------------
+
+
+
 function load_tela_3c(){
-    alert('load_tela_3c()');
+    const DOM_tela3 = document.querySelector('.tela_3');
+    DOM_tela3.innerHTML = `
+                            <div class="tela_3c">
+                                <div class="form_container">
+
+                                </div>
+                            </div>
+                          `;
+    const DOM_form_container = DOM_tela3.querySelector('.form_container');
+    DOM_form_container.innerHTML += `<h1>Agora decida os níveis</h1>`;
+    const form_container_divs = get_form_container_divs_tela3c();
+
+    for (let i = 0; i < form_container_divs.length; i++) {
+        DOM_form_container.innerHTML += form_container_divs[i];
+    }
+    DOM_form_container.innerHTML += `<button onclick="proceed_to_finalize_quiz()">
+                                Finalizar Quiz
+                            </button>`;
+    window.scroll({top: 0, left: 0, behavior: 'auto' });
+}
+
+
+
+
+
+function get_form_container_divs_tela3c(){
+    let form_container_divs = [];
+
+    for (let i = 0; i < current_user_created_quiz.levels.length; i++) {
+        const form_container_div = `
+                                    
+                                        <div class="form_question">
+                                            <h2>Nível ${i + 1}</h2>
+                                            <input type="text" placeholder="Título do nível" required>
+                                            <input type="number" placeholder="% de acerto mínima" required>
+                                            <input type="url" placeholder="URL da imagem do nível" required>
+                                            <textarea name="Descrição" rows="10" placeholder="Descrição do nível" required></textarea>
+                                        </div>`;
+        form_container_divs.push(form_container_div);
+    }
+    return form_container_divs;
+}
+
+
+function validate_inputs_tela_3c() {
+    let is_valid;
+
+
+    const DOM_form_container = document.querySelector('.form_container');
+    const DOM_level = DOM_form_container.querySelectorAll('.form_question')
+
+    for (let i = 0; i < current_user_created_quiz.questions.length; i++) {
+
+        let DOM_level_text = DOM_level[i].querySelector('input')[0];
+        let DOM_level_percentual = DOM_level[i].querySelector('input')[1];
+        let DOM_level_url = DOM_level[i].querySelector('input')[2];
+        let DOM_level_description = DOM_level[i].querySelector('textarea')[0];
+
+        // Validate level text
+        if (DOM_level_text.value.length <= 10){
+            is_valid = false;
+            DOM_level_text.value='';
+            DOM_level_text.scrollIntoView({behavior: 'smooth'});
+            alert('O titulo de cada nivel deve ter pelo menos 10 caracteres!');
+            return is_valid;
+        }
+        // Validate level percentual
+        if (DOM_level_percentual <= 0 || DOM_level_percentual >= 100){
+            is_valid = false;
+           DOM_level_percentual.value = '';
+           DOM_level_percentual.scrollIntoView({behavior: 'smooth'});
+            alert('o percentual de acerto minimo deve estar entre 0 e 100');
+            return is_valid;
+        }
+        // Validate correct answer image URL
+        if (!valid_url(DOM_level_url.value)){
+            is_valid = false;
+            DOM_level_url.value = '';
+            DOM_level_url.scrollIntoView({behavior: 'smooth'});
+            alert('As URLs das imagens de repostas devem ser válidas!');
+            return is_valid;
+        }
+        // Validate level text description
+        if (DOM_level_description.value.length <= 30){
+            is_valid = false;
+            DOM_level_description.value='';
+            DOM_level_description.scrollIntoView({behavior: 'smooth'});
+            alert('a descrição deve ter pelo menos 10 caracteres!');
+            return is_valid;
+        }
+    }
+
+    is_valid = true;
+    // Store current user-created Quizz on global variable
+    for (let k = 0; k < current_user_created_quiz.questions.length; k++) {
+
+        let DOM_level_text = DOM_level[k].querySelector('input')[0];
+        let DOM_level_percentual = DOM_level[k].querySelector('input')[1];
+        let DOM_level_url = DOM_level[k].querySelectorAll('input')[2];
+        let DOM_level_description = DOM_level[k].querySelector('textarea')[0];
+
+        let level = [];
+        // Store Correct Answer
+        level.push({
+                        title: DOM_level_text,
+                        image: DOM_level_url,
+                        text: DOM_level_description,
+                        minValue: DOM_level_percentual
+                    });
+        current_user_created_quiz.level[k] = level;
+    }
+
+    console.log('current_user_created_quiz');
+    console.log(current_user_created_quiz);
+    return is_valid;
+}
+
+
+function proceed_to_finalize_quiz() {
+    // Validates inputs from screen 3c (question creation screen)
+    let is_valid = validate_inputs_tela_3c();
+    if (!is_valid) return;
+
+    // Renders screen 3c (levels creation screen)
+    alert("tudo ok")
+
 }
 
 // -------------------------- Main --------------------------
