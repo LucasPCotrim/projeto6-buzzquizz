@@ -209,7 +209,7 @@ function render_quiz_tela2(quiz_container_name, index){
                                 </div>`;     
         }
     }
-    questions_container.querySelector('.question').classList.remove('hidden');
+    questions_container.querySelector('.question').classList.remove("hidden");
     
 }
 
@@ -517,10 +517,13 @@ function get_form_container_divs_tela3b(){
         const form_container_div = `
                                 <div class="form_container">
                                     <div class="form_question">
-                                        <h2>Pergunta ${i+1}</h2>
+                                        <div class="form_question_header">
+                                            <h2>Pergunta ${i+1}</h2>
+                                            <img src="imgs/create_logo.svg" onclick="open_tab(this)">
+                                        </div>
                                         <input type="text" placeholder="Texto da pergunta" required>
                                         <input type="text" placeholder="Cor de fundo da pergunta" required>
-                                    </div>
+                                    </>
                                     <div class="form_question">
                                         <h2>Resposta correta</h2>
                                         <input type="text" placeholder="Resposta correta" required>
@@ -541,7 +544,24 @@ function get_form_container_divs_tela3b(){
     return form_container_divs;
 }
 
-
+//----------------------------------------------------------------------------------------
+// Function: open_tab(elem)
+// Description: Opens question or level tab
+//
+// Inputs:
+// - elem: DOM element which represents create_logo img
+//
+// Outputs: none
+//----------------------------------------------------------------------------------------
+function open_tab(elem) {
+    const DOM_form_question_header = elem.parentElement;
+    const DOM_form_question = DOM_form_question_header.parentElement;
+    const DOM_form_container = DOM_form_question.parentElement;
+    console.log('elem');
+    console.log(elem);
+    DOM_form_container.style.height = 'initial';
+    elem.classList.add('hidden');
+}
 
 //----------------------------------------------------------------------------------------
 // Function: load_tela_3b()
@@ -568,7 +588,11 @@ function load_tela_3b() {
     DOM_tela3b.innerHTML += `<button onclick="proceed_to_create_levels()">
                                 Prosseguir para criar níveis
                             </button>`;
-    
+
+    DOM_tela3b.querySelectorAll('.form_container')[0].style.height = 'initial';
+    DOM_tela3b.querySelectorAll('.form_container')[0].querySelector('img').classList.add("hidden");
+    DOM_tela3b.querySelectorAll('.form_container')[0].querySelector('.form_question_header').setAttribute('id','h_init');
+    window.scroll({top: 0, left: 0, behavior: 'auto' });
 }
 
 //----------------------------------------------------------------------------------------
@@ -627,6 +651,8 @@ function validate_inputs_tela_3b() {
         if (DOM_question_text.value.length <= 20){
             is_valid = false;
             DOM_question_text.value='';
+            DOM_question.parentElement.style.height='initial';
+            DOM_question.parentElement.querySelector('img').classList.add('hidden');
             DOM_question_text.scrollIntoView({behavior: 'smooth'});
             alert('O texto de cada pergunta deve ter pelo menos 20 caracteres!');
             return is_valid;
@@ -635,6 +661,8 @@ function validate_inputs_tela_3b() {
         if (!valid_hexadecimal_color(DOM_question_color.value)){
             is_valid = false;
             DOM_question_color.value = '';
+            DOM_question.parentElement.style.height='initial';
+            DOM_question.parentElement.querySelector('img').classList.add('hidden');
             DOM_question_color.scrollIntoView({behavior: 'smooth'});
             alert('A cor da pergunta deve ser um hexadecimal válido');
             return is_valid;
@@ -642,6 +670,8 @@ function validate_inputs_tela_3b() {
         // Validate correct answer text
         if (DOM_correct_answer_text.value === ''){
             is_valid = false;
+            DOM_question.parentElement.style.height='initial';
+            DOM_question.parentElement.querySelector('img').classList.add('hidden');
             DOM_correct_answer_text.scrollIntoView({behavior: 'smooth'});
             alert('O texto da resposta correta não pode estar vazio!');
             return is_valid;
@@ -650,6 +680,8 @@ function validate_inputs_tela_3b() {
         if (!valid_url(DOM_correct_answer_url.value)){
             is_valid = false;
             DOM_correct_answer_url.value = '';
+            DOM_question.parentElement.style.height='initial';
+            DOM_question.parentElement.querySelector('img').classList.add('hidden');
             DOM_correct_answer_url.scrollIntoView({behavior: 'smooth'});
             alert('As URLs das imagens de repostas devem ser válidas!');
             return is_valid;
@@ -664,7 +696,11 @@ function validate_inputs_tela_3b() {
                 aux.push(j);
                 cont_valid_incorrect_answers++;
             }
-            else DOM_texto_resposta_incorreta.scrollIntoView({behavior: 'smooth'});
+            else{
+                DOM_question.parentElement.style.height='initial';
+                DOM_question.parentElement.querySelector('img').classList.add('hidden');
+                DOM_texto_resposta_incorreta.scrollIntoView({behavior: 'smooth'});
+            }
         }
         if (cont_valid_incorrect_answers === 0){
             is_valid = false;
@@ -755,7 +791,10 @@ function get_form_container_divs_tela3c(){
     for (let i = 0; i < current_user_created_quiz.levels.length; i++) {
         const form_container_div = `<div class="form_container">
                                         <div class="form_question">
-                                            <h2>Nível ${i + 1}</h2>
+                                            <div class="form_question_header">
+                                                <h2>Nível ${i + 1}</h2>
+                                                <img src="imgs/create_logo.svg" onclick="open_tab(this)">
+                                            </div>
                                             <input type="text" placeholder="Título do nível" required>
                                             <input type="number" placeholder="% de acerto mínima" required>
                                             <input type="url" placeholder="URL da imagem do nível" required>
@@ -790,6 +829,10 @@ function load_tela_3c(){
     DOM_tela3c.innerHTML += `<button onclick="proceed_to_finalize_quiz()">
                                 Finalizar Quiz
                              </button>`;
+
+    DOM_tela3c.querySelectorAll('.form_container')[0].style.height = 'initial';
+    DOM_tela3c.querySelectorAll('.form_container')[0].querySelector('img').classList.add("hidden");
+    DOM_tela3c.querySelectorAll('.form_container')[0].querySelector('.form_question_header').setAttribute('id','h_init');
     window.scroll({top: 0, left: 0, behavior: 'auto' });
 }
 
@@ -821,6 +864,8 @@ function validate_inputs_tela_3c() {
         if (DOM_level_text.value.length <= 10){
             is_valid = false;
             DOM_level_text.value='';
+            DOM_level.parentElement.style.height='initial';
+            DOM_level.parentElement.querySelector('img').classList.add('hidden');
             DOM_level_text.scrollIntoView({behavior: 'smooth'});
             alert('O titulo de cada nivel deve ter pelo menos 10 caracteres!');
             return is_valid;
@@ -829,6 +874,8 @@ function validate_inputs_tela_3c() {
         if (Number(DOM_level_percentual.value) < 0 || Number(DOM_level_percentual.value) >= 100){
             is_valid = false;
             DOM_level_percentual.value = '';
+            DOM_level.parentElement.style.height='initial';
+            DOM_level.parentElement.querySelector('img').classList.add('hidden');
             DOM_level_percentual.scrollIntoView({behavior: 'smooth'});
             alert('O percentual de acerto minimo deve estar entre 0 e 100');
             return is_valid;
@@ -841,6 +888,8 @@ function validate_inputs_tela_3c() {
         if (!valid_url(DOM_level_url.value)){
             is_valid = false;
             DOM_level_url.value = '';
+            DOM_level.parentElement.style.height='initial';
+            DOM_level.parentElement.querySelector('img').classList.add('hidden');
             DOM_level_url.scrollIntoView({behavior: 'smooth'});
             alert('As URLs das imagens de repostas devem ser válidas!');
             return is_valid;
@@ -849,6 +898,8 @@ function validate_inputs_tela_3c() {
         if (DOM_level_description.value.length <= 30){
             is_valid = false;
             DOM_level_description.value='';
+            DOM_level.parentElement.style.height='initial';
+            DOM_level.parentElement.querySelector('img').classList.add('hidden');
             DOM_level_description.scrollIntoView({behavior: 'smooth'});
             alert('A descrição deve ter pelo menos 30 caracteres!');
             return is_valid;
