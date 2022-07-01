@@ -903,9 +903,14 @@ function proceed_to_finalize_quiz() {
 
     // Renders screen 3d (quizz finalization screen)
     alert("tudo ok")
+    let promise = axios.post("https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes",current_user_created_quiz)
+    promise.then(save_quizz_API)
 
 }
 
+function save_quizz_API(){
+    alert("foi");
+}
 
 
 // -------------------------- Main --------------------------
