@@ -715,8 +715,6 @@ function validate_inputs_tela_3b() {
         current_user_created_quiz.questions[k] = question
     }
 
-    console.log('current_user_created_quiz');
-    console.log(current_user_created_quiz);
     return is_valid;
 }
 
@@ -810,6 +808,7 @@ function validate_inputs_tela_3c() {
     const DOM_tela3c = document.querySelector('.tela_3c');
     const DOM_form_containers = DOM_tela3c.querySelectorAll('.form_container');
 
+    let level_percentages = [];
     for (let i = 0; i < current_user_created_quiz.levels.length; i++) {
 
         let DOM_level = DOM_form_containers[i].querySelector('.form_question');
@@ -827,13 +826,17 @@ function validate_inputs_tela_3c() {
             return is_valid;
         }
         // Validate level percentual
-        if (DOM_level_percentual <= 0 || DOM_level_percentual >= 100){
+        if (Number(DOM_level_percentual.value) < 0 || Number(DOM_level_percentual.value) >= 100){
             is_valid = false;
-           DOM_level_percentual.value = '';
-           DOM_level_percentual.scrollIntoView({behavior: 'smooth'});
-            alert('o percentual de acerto minimo deve estar entre 0 e 100');
+            DOM_level_percentual.value = '';
+            DOM_level_percentual.scrollIntoView({behavior: 'smooth'});
+            alert('O percentual de acerto minimo deve estar entre 0 e 100');
             return is_valid;
         }
+        else{
+            level_percentages.push(Math.round(Number(DOM_level_percentual.value)))
+        }
+        
         // Validate correct answer image URL
         if (!valid_url(DOM_level_url.value)){
             is_valid = false;
@@ -847,9 +850,14 @@ function validate_inputs_tela_3c() {
             is_valid = false;
             DOM_level_description.value='';
             DOM_level_description.scrollIntoView({behavior: 'smooth'});
-            alert('a descrição deve ter pelo menos 30 caracteres!');
+            alert('A descrição deve ter pelo menos 30 caracteres!');
             return is_valid;
         }
+    }
+    if (!level_percentages.includes(0)){
+        is_valid = false;
+        alert('Deve existir pelo menos um nível com porcentagem mínima 0!');
+        return is_valid;
     }
 
     is_valid = true;
