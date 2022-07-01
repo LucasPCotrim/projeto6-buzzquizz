@@ -846,7 +846,7 @@ function validate_inputs_tela_3c() {
     }
 
     is_valid = true;
-    // Store current user-created Quizz on global variable
+    // Store current user-level on global variable
     for (let k = 0; k < current_user_created_quiz.questions.length; k++) {
 
         let DOM_level_text = DOM_level[k].querySelector('input')[0];
@@ -855,7 +855,7 @@ function validate_inputs_tela_3c() {
         let DOM_level_description = DOM_level[k].querySelector('textarea')[0];
 
         let level = [];
-        // Store Correct Answer
+        // Store level
         level.push({
                         title: DOM_level_text,
                         image: DOM_level_url,
