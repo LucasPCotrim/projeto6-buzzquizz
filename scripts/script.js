@@ -952,15 +952,51 @@ function proceed_to_finalize_quiz() {
     let is_valid = validate_inputs_tela_3c();
     if (!is_valid) return;
 
-    // Renders screen 3d (quizz finalization screen)
+    
     alert("tudo ok")
     let promise = axios.post(API_server,current_user_created_quiz)
     promise.then(save_quizz_API)
 
 }
 
-function save_quizz_API(){
-    alert("foi");
+
+
+//----------------------------------------------------------------------------------------
+// Function: load_tela_3d()
+// Description: Loads tela_3d after Quiz has been successfully created
+//
+// Inputs: none
+//
+// Outputs: none
+//----------------------------------------------------------------------------------------
+function load_tela_3d(){
+    const tela_3d_div = `<div class="tela_3">
+                            <div class="tela_3d">
+                                <h1>Seu quiz está pronto!</h1>
+                                <div class="img_result">
+                                    <div class="quiz_image">
+                                        <img src="${current_user_created_quiz.image}">
+                                    </div>
+                                    <h3>${current_user_created_quiz.title}</h3>
+                                </div>
+                                <button class="reset_quiz">
+                                    Reiniciar Quizz
+                                </button>
+                                <button class="back_home">
+                                    Voltar para home
+                                </button>
+                            </div>
+                        </div>`;
+    
+    DOM_page_content.innerHTML = tela_3d_div;
+}
+
+
+
+function save_quizz_API() {
+    console.log('load_tela_3d()');
+    // Render screen 3d (quizz finalization screen)
+    load_tela_3d()
 }
 
 
