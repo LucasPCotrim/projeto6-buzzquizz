@@ -1,37 +1,29 @@
 // -------------------------- Global Variables --------------------------
 let API_quizzes_list = [];
-let my_quizzes_list = [];
 let selected_quiz_index;
-let current_quiz_container_name;
 let current_quiz;
 let user_answers_array = [];
 let current_user_created_quiz;
-const API_server = "https://mock-api.driven.com.br/api/v7/buzzquizz/quizzes"; //old server: "https://mock-api.driven.com.br/api/v4/buzzquizz/quizzes"
-
+const API_server = "https://mock-api.driven.com.br/api/v7/buzzquizz/quizzes";
 
 let DOM_page_content = document.querySelector('.page_content');
-let DOM_API_quizzes_gallery;
 
 
 // -------------------------- Functions --------------------------
 
 //----------------------------------------------------------------------------------------
-// Function: render_my_quizzes()
-// Description: Renders user-created Quizzes (if there are none, renders 'empty_quiz_container')
+// Function: is_user_created_quizz(quizz)
+// Description: Checks if quizz is created by user
 //
-// Inputs: none
+// Inputs:
+// - quizz: Quizz object received from API server.
 //
-// Outputs:
+// Outputs: true or false;
 //----------------------------------------------------------------------------------------
-function render_my_quizzes(){
-    if(my_quizzes_list.length > 0){
-        document.querySelector(".empty_quiz_container").classList.add("hidden");
-        document.querySelectorAll(".quiz_container")[0].classList.remove("hidden");
-    }
-    else{
-        document.querySelector(".empty_quiz_container").classList.remove("hidden");
-        document.querySelectorAll(".quiz_container")[0].classList.add("hidden");
-    }
+function is_user_created_quizz(quizz){
+    if(localStorage.getItem(`${quizz.id}`) != null) return true;
+        
+    return false;
 }
 
 //----------------------------------------------------------------------------------------
@@ -46,20 +38,47 @@ function render_my_quizzes(){
 //----------------------------------------------------------------------------------------
 function render_API_quizzes(object){
     API_quizzes_list = object.data;
-    console.log('API_quizzes_list');
-    console.log(API_quizzes_list);
 
-    DOM_API_quizzes_gallery = document.querySelector('.quiz_gallery');
+    const DOM_my_quizzes_gallery = document.querySelector('.my_quiz_gallery');
+    const DOM_API_quizzes_gallery = document.querySelector('.quiz_gallery');
+
+    let no_user_quizzes = true;
     
     for(let i = 0; i < API_quizzes_list.length; i++){
-        DOM_API_quizzes_gallery.innerHTML += `
-                    <div class="quiz" onclick="click_quiz('API_quizzes', ${i})">
+
+        let quizz = API_quizzes_list[i];
+
+        if(is_user_created_quizz(quizz)){
+            DOM_my_quizzes_gallery.innerHTML += `
+                    <div class="quiz" onclick="click_quiz(${quizz.id})" id="id_${quizz.id}">
                         <div class="quiz_image">
-                            <img src="${API_quizzes_list[i].image}">
+                            <img src="${quizz.image}">
                         </div>
-                        <h1>${API_quizzes_list[i].title}</h1>
+                        <h1>${quizz.title}</h1>
+                    </div>`;
+            no_user_quizzes = false;
+        }
+        else{
+            DOM_API_quizzes_gallery.innerHTML += `
+                    <div class="quiz" onclick="click_quiz(${quizz.id})" id="id_${quizz.id}">
+                        <div class="quiz_image">
+                            <img src="${quizz.image}">
+                        </div>
+                        <h1>${quizz.title}</h1>
                         </div>`
+        }
     }
+
+    document.querySelectorAll(".quiz_container")[1].classList.remove("hidden");
+    if (no_user_quizzes){
+        document.querySelector(".empty_quiz_container").classList.remove("hidden");
+        document.querySelectorAll(".quiz_container")[0].classList.add("hidden");
+    }
+    else{
+        document.querySelector(".empty_quiz_container").classList.add("hidden");
+        document.querySelectorAll(".quiz_container")[0].classList.remove("hidden");
+    }
+    
 }
 
 //----------------------------------------------------------------------------------------
@@ -72,7 +91,8 @@ function render_API_quizzes(object){
 //----------------------------------------------------------------------------------------
 function get_API_quizzes(){
     const promise = axios.get(API_server);
-    promise.then(render_API_quizzes);
+    promise.catch((err)=>console.log(err))
+           .then(render_API_quizzes);
 }
 
 //----------------------------------------------------------------------------------------
@@ -85,7 +105,7 @@ function get_API_quizzes(){
 //----------------------------------------------------------------------------------------
 function load_tela_1() {
     const tela_1_div = `<div class="tela_1">
-                            <section class="empty_quiz_container">
+                            <section class="empty_quiz_container hidden">
                                 <h1>Você não criou nenhum quizz ainda :(</h1>
                                 <button onclick="load_tela_3()">Criar Quizz</button>
                             </section>
@@ -98,7 +118,7 @@ function load_tela_1() {
                                     
                                 </div>
                             </section>
-                            <section class="quiz_container" id="API_quizzes_container">
+                            <section class="quiz_container hidden" id="API_quizzes_container">
                                 <h1>Todos os Quizzes</h1>
                                 <div class="quiz_gallery">
 
@@ -107,7 +127,6 @@ function load_tela_1() {
                         </div>`;
     DOM_page_content.innerHTML = tela_1_div;
     get_API_quizzes();
-    render_my_quizzes();
 }
 
 //----------------------------------------------------------------------------------------
@@ -131,50 +150,43 @@ function load_tela_2() {
 }
 
 //----------------------------------------------------------------------------------------
-// Function: click_quiz(quiz_container_name, index)
+// Function: click_quiz(index)
 // Description: Function called whenever user clicks on a Quizz in screen 1.
 //
 // Inputs:
-// - quiz_container_name ('API_quizzes' or 'my_quizzes'): Indicates whether selected Quizz
-//                                                        is from the API Quizz container
-//                                                        or from the user-created Quizz
-//                                                        .container
-// - index: Index of selected Quizz in the respective container.
+// - quizz_id: Quizz id in 'API_quizzes_list'
 //
 // Outputs: none;
 //----------------------------------------------------------------------------------------
-function click_quiz(quiz_container_name, index){
-    current_quiz_container_name = quiz_container_name;
-    selected_quiz_index = index;
+function click_quiz(quizz_id){
+    selected_quiz_index = quizz_id;
     load_tela_2();
-    render_quiz_tela2(quiz_container_name, index);
+    render_quiz_tela2(quizz_id);
     user_answers_array = [];
 }
 
 //----------------------------------------------------------------------------------------
-// Function: render_quiz_tela2(quiz_container_name, index)
+// Function: render_quiz_tela2(quizz_id)
 // Description: Renders selected Quizz in screen 2.
 //
 // Inputs:
-// - quiz_container_name ('API_quizzes' or 'my_quizzes'): Indicates whether selected Quizz
-//                                                        is from the API Quizz container
-//                                                        or from the user-created Quizz
-//                                                        .container
-// - index: Index of selected Quizz in the respective container.
+// - quizz_id: Quizz id in 'API_quizzes_list'
 //
 // Outputs: none;
 //----------------------------------------------------------------------------------------
-function render_quiz_tela2(quiz_container_name, index){
+function render_quiz_tela2(quizz_id){
     window.scroll({top: 0, left: 0, behavior: 'auto' });
-
-    let quiz_array;
-    if (quiz_container_name=='API_quizzes'){
-        quiz_array = API_quizzes_list;
+    
+    // Get quiz to be rendered by checking quizz_id
+    for (let i = 0; i < API_quizzes_list.length; i++) {
+        if(API_quizzes_list[i].id == quizz_id){
+            current_quiz = API_quizzes_list[i];
+        }
     }
-    else if(quiz_container_name=='my_quizzes'){
-        quiz_array = my_quizzes_list;
+    if(current_quiz==undefined){
+        console.log('Error');
+        return;
     }
-    current_quiz = quiz_array[index];
 
     // Fill quiz_title
     document.querySelector('.quiz_title').innerHTML += `<div class="quiz_title_image">
@@ -355,7 +367,7 @@ function display_quiz_result() {
 //----------------------------------------------------------------------------------------
 function restart_current_quizz() {
     load_tela_2();
-    render_quiz_tela2(current_quiz_container_name, selected_quiz_index);
+    render_quiz_tela2(selected_quiz_index);
     user_answers_array = [];
 }
 
@@ -369,13 +381,12 @@ function restart_current_quizz() {
 //----------------------------------------------------------------------------------------
 function go_to_homepage() {
     API_quizzes_list = [];
-    my_quizzes_list = [];
-    selected_quiz_index = undefined;
-    current_quiz_container_name = undefined;
     current_quiz = undefined;
+    selected_quiz_index = undefined;
+    current_user_created_quiz = undefined;
     user_answers_array = [];
-
     load_tela_1();
+    window.scroll({top: 0, left: 0, behavior: 'auto' });
 }
 
 //----------------------------------------------------------------------------------------
@@ -557,8 +568,6 @@ function open_tab(elem) {
     const DOM_form_question_header = elem.parentElement;
     const DOM_form_question = DOM_form_question_header.parentElement;
     const DOM_form_container = DOM_form_question.parentElement;
-    console.log('elem');
-    console.log(elem);
     DOM_form_container.style.height = 'initial';
     elem.classList.add('hidden');
 }
@@ -932,8 +941,6 @@ function validate_inputs_tela_3c() {
         current_user_created_quiz.levels[k] = level;
     }
 
-    console.log('current_user_created_quiz');
-    console.log(current_user_created_quiz);
     return is_valid;
 }
 
@@ -952,14 +959,12 @@ function proceed_to_finalize_quiz() {
     let is_valid = validate_inputs_tela_3c();
     if (!is_valid) return;
 
-    
-    alert("tudo ok")
+
     let promise = axios.post(API_server,current_user_created_quiz)
-    promise.then(save_quizz_LOCAL)
+    promise.catch((err)=>console.log(err))
+           .then(save_quizz_local_storage);
 
 }
-
-
 
 //----------------------------------------------------------------------------------------
 // Function: load_tela_3d()
@@ -979,10 +984,10 @@ function load_tela_3d(){
                                     </div>
                                     <h3>${current_user_created_quiz.title}</h3>
                                 </div>
-                                <button class="reset_quiz">
-                                    Reiniciar Quizz
+                                <button class="reset_quiz" onclick="access_new_user_created_quiz(${current_user_created_quiz.id})">
+                                    Acessar Quiz
                                 </button>
-                                <button class="back_home">
+                                <button class="back_home" onclick="go_to_homepage()">
                                     Voltar para home
                                 </button>
                             </div>
@@ -992,14 +997,44 @@ function load_tela_3d(){
 }
 
 
-    
-function save_quizz_LOCAL(object){
-    alert("foi");
+//----------------------------------------------------------------------------------------
+// Function: save_quizz_local_storage(object)
+// Description: Callback function from POST request to store user created quizz on API server
+//
+// Inputs:
+// - object: Object response of API server
+//
+// Outputs: none
+//----------------------------------------------------------------------------------------
+function save_quizz_local_storage(object){
     const objectSerializado = JSON.stringify(object);
-    localStorage.setItem(`${object.id}`, objectSerializado);
-
+    localStorage.setItem(`${object.data.id}`, objectSerializado);
+    
+    current_user_created_quiz.id = object.data.id;
     // Render screen 3d (quizz finalization screen)
     load_tela_3d();
+}
+
+//----------------------------------------------------------------------------------------
+// Function: access_new_user_created_quiz(quizz_id)
+// Description: OnClick function called when user wants to access newly created quiz
+//
+// Inputs:
+// - quizz_id: Id of quizz to be displayed.
+//
+// Outputs: none
+//----------------------------------------------------------------------------------------
+function access_new_user_created_quiz(quizz_id){
+    console.log('access_new_user_created_quiz');
+    const promise = axios.get(API_server);
+    promise.catch((err)=>console.log(err))
+           .then(function (object) {
+                    API_quizzes_list = object.data;
+                    console.log('quizz_id = ',quizz_id);
+                    console.log('API_quizzes_list = ');
+                    console.log(API_quizzes_list);
+                    click_quiz(quizz_id);
+                })
 }
 
 
