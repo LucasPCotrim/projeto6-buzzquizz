@@ -188,6 +188,8 @@ function render_quiz_tela2(quizz_id){
         return;
     }
 
+    
+
     // Fill quiz_title
     document.querySelector('.quiz_title').innerHTML += `<div class="quiz_title_image">
                                                             <img src="${current_quiz.image}">
@@ -195,13 +197,12 @@ function render_quiz_tela2(quizz_id){
                                                         <h1>${current_quiz.title}</h1>
                                                         `;
     
-    let questions_container = document.querySelector('.questions_container');
-    let answers;
+    let DOM_questions_container = document.querySelector('.questions_container');
 
     let questions = current_quiz.questions;
     // Fill questions_container
     for(let i = 0; i < questions.length; i++){
-        questions_container.innerHTML += `
+        DOM_questions_container.innerHTML += `
                         <div class="question hidden">
                             <div class="question_title" style="background-color:${questions[i].color};">
                                 <h1>${questions[i].title}</h1>
@@ -210,18 +211,25 @@ function render_quiz_tela2(quizz_id){
 
                             </div>
                         </div>`;
-        answers = questions_container.lastChild.querySelector('.question_alternatives');
+        let DOM_answers = DOM_questions_container.lastChild.querySelector('.question_alternatives');
+
+        // Shuffle order of answers in current quiz question
+        let unshuffled = questions[i].answers;
+        let shuffled = unshuffled.map(value => ({ value, sort: Math.random() }))
+                                 .sort((a, b) => a.sort - b.sort)
+                                 .map(({ value }) => value);
+        questions[i].answers = shuffled;
 
         // Fill question_alternatives
         for(let j = 0; j < questions[i].answers.length; j++){
-            answers.innerHTML += `
+            DOM_answers.innerHTML += `
                                 <div class="alternative" onclick="select_alternative(${i},${j})">
                                     <img src="${questions[i].answers[j].image}">
                                     <h2>${questions[i].answers[j].text}</h2>
                                 </div>`;     
         }
     }
-    questions_container.querySelector('.question').classList.remove("hidden");
+    DOM_questions_container.querySelector('.question').classList.remove("hidden");
     
 }
 
