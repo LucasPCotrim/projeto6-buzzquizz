@@ -869,9 +869,17 @@ function get_form_container_divs_tela3c(){
                                                 <img src="imgs/create_logo.svg" onclick="open_tab(this)">
                                             </div>
                                             <input type="text" placeholder="Título do nível" required>
+                                            <p class="error text_error_3c hidden">O título deve ter pelo menos 10 caracteres</p>
+
                                             <input type="number" placeholder="% de acerto mínima" required>
+                                            <p class="error acerto_error_3c hidden">a porcentagem de acerto tem que estar entre 0 e 100</p>
+
                                             <input type="url" placeholder="URL da imagem do nível" required>
+                                            <p class="error url_error_3c hidden">Url inválida</p>
+
                                             <textarea name="Descrição" rows="10" placeholder="Descrição do nível" required></textarea>
+                                            <p class="error description_error_3c hidden">Descrição deve conter no minimo 30 caracteres</p>
+
                                         </div>
                                     </div>`;
         form_container_divs.push(form_container_div);
@@ -940,7 +948,8 @@ function validate_inputs_tela_3c() {
             DOM_level.parentElement.style.height='initial';
             DOM_level.parentElement.querySelector('img').classList.add('hidden');
             DOM_level_text.scrollIntoView({behavior: 'smooth'});
-            alert('O titulo de cada nivel deve ter pelo menos 10 caracteres!');
+            DOM_level_text.style.backgroundColor = '#FFE9E9';
+            document.querySelector(".text_error_3c").classList.remove("hidden");
             return is_valid;
         }
         // Validate level percentual
@@ -950,7 +959,10 @@ function validate_inputs_tela_3c() {
             DOM_level.parentElement.style.height='initial';
             DOM_level.parentElement.querySelector('img').classList.add('hidden');
             DOM_level_percentual.scrollIntoView({behavior: 'smooth'});
-            alert('O percentual de acerto minimo deve estar entre 0 e 100');
+            DOM_level_text.style.backgroundColor = '#FFFFFF';
+            document.querySelector(".text_error_3c").classList.add("hidden");
+            DOM_level_percentual.style.backgroundColor = '#FFE9E9';
+            document.querySelector(".acerto_error_3c").classList.remove("hidden");
             return is_valid;
         }
         else{
@@ -964,7 +976,12 @@ function validate_inputs_tela_3c() {
             DOM_level.parentElement.style.height='initial';
             DOM_level.parentElement.querySelector('img').classList.add('hidden');
             DOM_level_url.scrollIntoView({behavior: 'smooth'});
-            alert('As URLs das imagens de repostas devem ser válidas!');
+            DOM_level_text.style.backgroundColor = '#FFFFFF';
+            document.querySelector(".text_error_3c").classList.add("hidden");
+            DOM_level_percentual.style.backgroundColor = '#FFFFFF';
+            document.querySelector(".acerto_error_3c").classList.add("hidden");
+            DOM_level_url.style.backgroundColor = '#FFE9E9';
+            document.querySelector(".url_error_3c").classList.remove("hidden");
             return is_valid;
         }
         // Validate level text description
@@ -974,7 +991,14 @@ function validate_inputs_tela_3c() {
             DOM_level.parentElement.style.height='initial';
             DOM_level.parentElement.querySelector('img').classList.add('hidden');
             DOM_level_description.scrollIntoView({behavior: 'smooth'});
-            alert('A descrição deve ter pelo menos 30 caracteres!');
+            DOM_level_text.style.backgroundColor = '#FFFFFF';
+            document.querySelector(".text_error_3c").classList.add("hidden");
+            DOM_level_percentual.style.backgroundColor = '#FFFFFF';
+            document.querySelector(".acerto_error_3c").classList.add("hidden");
+            DOM_level_url.style.backgroundColor = '#FFFFFF';
+            document.querySelector(".url_error_3c").classList.add("hidden");
+            DOM_level_description.style.backgroundColor = '#FFE9E9';
+            document.querySelector(".description_error_3c").classList.remove("hidden");
             return is_valid;
         }
     }
