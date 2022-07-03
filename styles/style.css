@@ -689,7 +689,7 @@ button.back_home {
     display: none;
 }
 
-.form_container > p{
+.error{
     font-family: 'Roboto';
     font-style: normal;
     font-weight: 400;
@@ -700,8 +700,6 @@ button.back_home {
     margin-bottom: 15px;
     
 }
-
-
 
 
 

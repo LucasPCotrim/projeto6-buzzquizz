@@ -411,16 +411,16 @@ function load_tela_3(){
                                 <h1>Comece pelo começo</h1>
                                 <div class="form_container">
                                     <input type="text" class="text" placeholder="Título do seu quizz" required>
-                                    <p class="text_error hidden">Digite um titulo que contenha entre 20 e 65 caracteres</p>
+                                    <p class="text_error hidden error">Digite um titulo que contenha entre 20 e 65 caracteres</p>
                                     
                                     <input type="url" class="url" placeholder="URL da imagem do seu quizz" required>
-                                    <p class="url_error hidden">O valor informado não é uma url valida</p>
+                                    <p class="url_error hidden error">O valor informado não é uma url valida</p>
                                     
                                     <input type="number" class="qtd_perguntas" placeholder="Quantidade de perguntas do quizz" required>
-                                    <p class="qtd_perguntas_error hidden">A quantidade minima de perguntas é 3</p>
+                                    <p class="qtd_perguntas_error hidden error">A quantidade minima de perguntas é 3</p>
                                     
                                     <input type="number" class="qtd_niveis" placeholder="Quantidade de níveis do quizz" required>
-                                    <p class="niveis_error hidden">A uantidade minima de erros é 2</p>
+                                    <p class="niveis_error hidden error">A uantidade minima de erros é 2</p>
                                 </div>
                                 <button onclick="proceed_to_create_questions()">Prosseguir para criar perguntas</button>
                             </div>
@@ -562,20 +562,37 @@ function get_form_container_divs_tela3b(){
                                             <img src="imgs/create_logo.svg" onclick="open_tab(this)">
                                         </div>
                                         <input type="text" placeholder="Texto da pergunta" required>
+                                        <p class="error text_error_3b hidden">Digite uma pergunta com no minimo 20 caracteres</p>
+
                                         <input type="text" placeholder="Cor de fundo da pergunta" required>
+                                        <p class="error background_color_error_3b hidden">Digite uma cor em hexadecimal</p>
+
                                     </>
                                     <div class="form_question">
                                         <h2>Resposta correta</h2>
                                         <input type="text" placeholder="Resposta correta" required>
+                                        <p class="error correct_error_3b hidden">Digite uma resposta</p>
+                                       
                                         <input type="text" placeholder="URL da imagem" required>
+                                        <p class="error url_error_3b hidden">Url invalido</p>
                                     </div>
                                     <div class="form_question">
                                         <h2>Respostas incorretas</h2>
                                         <input type="text" placeholder="Resposta incorreta 1" required>
+                                        <p class="error incorret_error_3b hidden">insira pelo menos uma resposta incorreta</p>
+
                                         <input type="text" placeholder="URL da imagem 1" required>
+                                        <p class="error incorret_error_3b hidden">insira pelo menos uma resposta incorreta</p>
+
                                         <input type="text" placeholder="Resposta incorreta 2" required>
+                                        <p class="error incorret_error_3b hidden">insira pelo menos uma resposta incorreta</p>
+
                                         <input type="text" placeholder="URL da imagem 2" required>
+                                        <p class="error incorret_error_3b hidden">insira pelo menos uma resposta incorreta</p>
+
                                         <input type="text" placeholder="Resposta incorreta 3" required>
+                                        <p class="error incorret_error_3b hidden">insira pelo menos uma resposta incorreta</p>
+                                        
                                         <input type="text" placeholder="URL da imagem 3" required>
                                     </div>
                                 </div>`;
@@ -692,7 +709,8 @@ function validate_inputs_tela_3b() {
             DOM_question.parentElement.style.height='initial';
             DOM_question.parentElement.querySelector('img').classList.add('hidden');
             DOM_question_text.scrollIntoView({behavior: 'smooth'});
-            alert('O texto de cada pergunta deve ter pelo menos 20 caracteres!');
+            DOM_question_text.style.backgroundColor = '#FFE9E9';
+            document.querySelector(".text_error_3b").classList.remove("hidden");
             return is_valid;
         }
         // Validate question color
@@ -702,7 +720,10 @@ function validate_inputs_tela_3b() {
             DOM_question.parentElement.style.height='initial';
             DOM_question.parentElement.querySelector('img').classList.add('hidden');
             DOM_question_color.scrollIntoView({behavior: 'smooth'});
-            alert('A cor da pergunta deve ser um hexadecimal válido');
+            DOM_question_text.style.backgroundColor = '#FFFFFF';
+            DOM_question_color.style.backgroundColor = '#FFE9E9';
+            document.querySelector(".text_error_3b").classList.add("hidden");
+            document.querySelector(".background_color_error_3b").classList.remove("hidden");
             return is_valid;
         }
         // Validate correct answer text
@@ -711,7 +732,12 @@ function validate_inputs_tela_3b() {
             DOM_question.parentElement.style.height='initial';
             DOM_question.parentElement.querySelector('img').classList.add('hidden');
             DOM_correct_answer_text.scrollIntoView({behavior: 'smooth'});
-            alert('O texto da resposta correta não pode estar vazio!');
+            DOM_question_text.style.backgroundColor = '#FFFFFF';
+            DOM_question_color.style.backgroundColor = '#FFFFFF';
+            DOM_correct_answer_text.style.backgroundColor = '#FFE9E9';
+            document.querySelector(".text_error_3b").classList.add("hidden");
+            document.querySelector(".background_color_error_3b").classList.add("hidden");
+            document.querySelector(".correct_error_3b").classList.remove("hidden");
             return is_valid;
         }
         // Validate correct answer image URL
@@ -721,9 +747,18 @@ function validate_inputs_tela_3b() {
             DOM_question.parentElement.style.height='initial';
             DOM_question.parentElement.querySelector('img').classList.add('hidden');
             DOM_correct_answer_url.scrollIntoView({behavior: 'smooth'});
-            alert('As URLs das imagens de repostas devem ser válidas!');
+            DOM_question_text.style.backgroundColor = '#FFFFFF';
+            DOM_question_color.style.backgroundColor = '#FFFFFF';
+            DOM_correct_answer_text.style.backgroundColor = '#FFFFFF';
+            DOM_correct_answer_url.style.backgroundColor = '#FFE9E9';
+            document.querySelector(".text_error_3b").classList.add("hidden");
+            document.querySelector(".background_color_error_3b").classList.add("hidden");
+            document.querySelector(".correct_error_3b").classList.add("hidden");
+            document.querySelector(".url_error_3b").classList.remove("hidden");
             return is_valid;
         }
+        document.querySelector(".url_error_3b").classList.add("hidden");
+        DOM_correct_answer_url.style.backgroundColor = '#FFFFFF';
         // Validate incorrect answers
         let aux = [];
         let cont_valid_incorrect_answers = 0;
@@ -745,7 +780,7 @@ function validate_inputs_tela_3b() {
             for (let d = 0; d < DOM_incorrect_answers_inputs.length; d++) {
                 DOM_incorrect_answers_inputs[d].value = '';
             }
-            alert('Deve haver pelo menos uma resposta incorreta!');
+            alert("é obrigatória a inserção de pelo menos uma resposta incorreta")
             return is_valid;
         }
         array_with_indexes_of_valid_incorrect_answers.push(aux);
