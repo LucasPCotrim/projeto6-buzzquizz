@@ -411,9 +411,16 @@ function load_tela_3(){
                                 <h1>Comece pelo começo</h1>
                                 <div class="form_container">
                                     <input type="text" class="text" placeholder="Título do seu quizz" required>
+                                    <p class="text_error hidden">Digite um titulo que contenha entre 20 e 65 caracteres</p>
+                                    
                                     <input type="url" class="url" placeholder="URL da imagem do seu quizz" required>
+                                    <p class="url_error hidden">O valor informado não é uma url valida</p>
+                                    
                                     <input type="number" class="qtd_perguntas" placeholder="Quantidade de perguntas do quizz" required>
+                                    <p class="qtd_perguntas_error hidden">A quantidade minima de perguntas é 3</p>
+                                    
                                     <input type="number" class="qtd_niveis" placeholder="Quantidade de níveis do quizz" required>
+                                    <p class="niveis_error hidden">A uantidade minima de erros é 2</p>
                                 </div>
                                 <button onclick="proceed_to_create_questions()">Prosseguir para criar perguntas</button>
                             </div>
@@ -462,28 +469,42 @@ function validate_inputs_tela_3a() {
     if (DOM_quiz_title.value.length <= 20){
         is_valid = false;
         DOM_quiz_title.value = "";
-        alert('O título do quizz deve ter pelo meno 20 caracteres!');
+        DOM_quiz_title.style.backgroundColor = '#FFE9E9';
+        document.querySelector(".text_error").classList.remove("hidden");
         return is_valid;
     }
     // Check if image URL is valid
     if (!valid_url(DOM_url.value)){
         is_valid = false;
         DOM_url.value = "";
-        alert('A url da imagem deve ser válida!');
+        DOM_quiz_title.style.backgroundColor = '#FFFFFF';
+        DOM_url.style.backgroundColor = '#FFE9E9';
+        document.querySelector(".text_error").classList.add("hidden");
+        document.querySelector(".url_error").classList.remove("hidden");
         return is_valid;
     }
     // Check if number of questions is integer and >= 3
     if (Number(DOM_n_questions.value) % 1 != 0 || Number(DOM_n_questions.value) < 3){
         is_valid = false;
         DOM_n_questions.value = "";
-        alert('O número de perguntas deve ser maior ou igual a 3!');
+        DOM_url.style.backgroundColor = '#FFFFFF';
+        DOM_n_questions.style.backgroundColor = '#FFE9E9';
+        document.querySelector(".text_error").classList.add("hidden");
+        document.querySelector(".url_error").classList.add("hidden");
+        document.querySelector(".qtd_perguntas_error").classList.remove("hidden");
         return is_valid;
     }
     // Check if number of levels is integer and >= 2
     if (Number(DOM_n_levels.value) % 1 != 0 || Number(DOM_n_levels.value) < 2){
         is_valid = false;
         DOM_n_levels.value = "";
-        alert('O número de níveis deve ser maior ou igual a 2!');
+        DOM_n_levels.style.backgroundColor = '#FFE9E9';
+        DOM_url.style.backgroundColor = '#FFFFFF';
+        DOM_n_questions.style.backgroundColor = '#FFFFFF';
+        document.querySelector(".text_error").classList.add("hidden");
+        document.querySelector(".url_error").classList.add("hidden");
+        document.querySelector(".qtd_perguntas_error").classList.add("hidden");
+        document.querySelector(".niveis_error").classList.remove("hidden");
         return is_valid;
     }
 

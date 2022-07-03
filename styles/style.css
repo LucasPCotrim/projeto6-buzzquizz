@@ -442,7 +442,7 @@ button.back_home {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    align-items: center;
+    
 }
 .tela_3 input{
     box-sizing: border-box;
@@ -687,6 +687,18 @@ button.back_home {
 
 .hidden {
     display: none;
+}
+
+.form_container > p{
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 19px;
+    color: #EC362D;
+    margin-top: -7px;
+    margin-bottom: 15px;
+    
 }
 
 
