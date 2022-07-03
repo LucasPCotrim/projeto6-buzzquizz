@@ -710,7 +710,7 @@ function validate_inputs_tela_3b() {
             DOM_question.parentElement.querySelector('img').classList.add('hidden');
             DOM_question_text.scrollIntoView({behavior: 'smooth'});
             DOM_question_text.style.backgroundColor = '#FFE9E9';
-            document.querySelector(".text_error_3b").classList.remove("hidden");
+            DOM_form_containers[i].querySelector(".text_error_3b").classList.remove("hidden");
             return is_valid;
         }
         // Validate question color
@@ -722,8 +722,8 @@ function validate_inputs_tela_3b() {
             DOM_question_color.scrollIntoView({behavior: 'smooth'});
             DOM_question_text.style.backgroundColor = '#FFFFFF';
             DOM_question_color.style.backgroundColor = '#FFE9E9';
-            document.querySelector(".text_error_3b").classList.add("hidden");
-            document.querySelector(".background_color_error_3b").classList.remove("hidden");
+            DOM_form_containers[i].querySelector(".text_error_3b").classList.add("hidden");
+            DOM_form_containers[i].querySelector(".background_color_error_3b").classList.remove("hidden");
             return is_valid;
         }
         // Validate correct answer text
@@ -735,9 +735,9 @@ function validate_inputs_tela_3b() {
             DOM_question_text.style.backgroundColor = '#FFFFFF';
             DOM_question_color.style.backgroundColor = '#FFFFFF';
             DOM_correct_answer_text.style.backgroundColor = '#FFE9E9';
-            document.querySelector(".text_error_3b").classList.add("hidden");
-            document.querySelector(".background_color_error_3b").classList.add("hidden");
-            document.querySelector(".correct_error_3b").classList.remove("hidden");
+            DOM_form_containers[i].querySelector(".text_error_3b").classList.add("hidden");
+            DOM_form_containers[i].querySelector(".background_color_error_3b").classList.add("hidden");
+            DOM_form_containers[i].querySelector(".correct_error_3b").classList.remove("hidden");
             return is_valid;
         }
         // Validate correct answer image URL
@@ -751,13 +751,13 @@ function validate_inputs_tela_3b() {
             DOM_question_color.style.backgroundColor = '#FFFFFF';
             DOM_correct_answer_text.style.backgroundColor = '#FFFFFF';
             DOM_correct_answer_url.style.backgroundColor = '#FFE9E9';
-            document.querySelector(".text_error_3b").classList.add("hidden");
-            document.querySelector(".background_color_error_3b").classList.add("hidden");
-            document.querySelector(".correct_error_3b").classList.add("hidden");
-            document.querySelector(".url_error_3b").classList.remove("hidden");
+            DOM_form_containers[i].querySelector(".text_error_3b").classList.add("hidden");
+            DOM_form_containers[i].querySelector(".background_color_error_3b").classList.add("hidden");
+            DOM_form_containers[i].querySelector(".correct_error_3b").classList.add("hidden");
+            DOM_form_containers[i].querySelector(".url_error_3b").classList.remove("hidden");
             return is_valid;
         }
-        document.querySelector(".url_error_3b").classList.add("hidden");
+        DOM_form_containers[i].querySelector(".url_error_3b").classList.add("hidden");
         DOM_correct_answer_url.style.backgroundColor = '#FFFFFF';
         // Validate incorrect answers
         let aux = [];
@@ -949,20 +949,20 @@ function validate_inputs_tela_3c() {
             DOM_level.parentElement.querySelector('img').classList.add('hidden');
             DOM_level_text.scrollIntoView({behavior: 'smooth'});
             DOM_level_text.style.backgroundColor = '#FFE9E9';
-            document.querySelector(".text_error_3c").classList.remove("hidden");
+            DOM_level.querySelector(".text_error_3c").classList.remove("hidden");
             return is_valid;
         }
         // Validate level percentual
-        if (Number(DOM_level_percentual.value) < 0 || Number(DOM_level_percentual.value) >= 100){
+        if (Number(DOM_level_percentual.value) < 0 || Number(DOM_level_percentual.value) >= 100 || DOM_level_percentual.value == ""){
             is_valid = false;
             DOM_level_percentual.value = '';
             DOM_level.parentElement.style.height='initial';
             DOM_level.parentElement.querySelector('img').classList.add('hidden');
             DOM_level_percentual.scrollIntoView({behavior: 'smooth'});
             DOM_level_text.style.backgroundColor = '#FFFFFF';
-            document.querySelector(".text_error_3c").classList.add("hidden");
+            DOM_level.querySelector(".text_error_3c").classList.add("hidden");
             DOM_level_percentual.style.backgroundColor = '#FFE9E9';
-            document.querySelector(".acerto_error_3c").classList.remove("hidden");
+            DOM_level.querySelector(".acerto_error_3c").classList.remove("hidden");
             return is_valid;
         }
         else{
@@ -977,11 +977,11 @@ function validate_inputs_tela_3c() {
             DOM_level.parentElement.querySelector('img').classList.add('hidden');
             DOM_level_url.scrollIntoView({behavior: 'smooth'});
             DOM_level_text.style.backgroundColor = '#FFFFFF';
-            document.querySelector(".text_error_3c").classList.add("hidden");
+            DOM_level.querySelector(".text_error_3c").classList.add("hidden");
             DOM_level_percentual.style.backgroundColor = '#FFFFFF';
-            document.querySelector(".acerto_error_3c").classList.add("hidden");
+            DOM_level.querySelector(".acerto_error_3c").classList.add("hidden");
             DOM_level_url.style.backgroundColor = '#FFE9E9';
-            document.querySelector(".url_error_3c").classList.remove("hidden");
+            DOM_level.querySelector(".url_error_3c").classList.remove("hidden");
             return is_valid;
         }
         // Validate level text description
@@ -992,15 +992,19 @@ function validate_inputs_tela_3c() {
             DOM_level.parentElement.querySelector('img').classList.add('hidden');
             DOM_level_description.scrollIntoView({behavior: 'smooth'});
             DOM_level_text.style.backgroundColor = '#FFFFFF';
-            document.querySelector(".text_error_3c").classList.add("hidden");
+            DOM_level.querySelector(".text_error_3c").classList.add("hidden");
             DOM_level_percentual.style.backgroundColor = '#FFFFFF';
-            document.querySelector(".acerto_error_3c").classList.add("hidden");
+            DOM_level.querySelector(".acerto_error_3c").classList.add("hidden");
             DOM_level_url.style.backgroundColor = '#FFFFFF';
-            document.querySelector(".url_error_3c").classList.add("hidden");
+            DOM_level.querySelector(".url_error_3c").classList.add("hidden");
             DOM_level_description.style.backgroundColor = '#FFE9E9';
-            document.querySelector(".description_error_3c").classList.remove("hidden");
+            DOM_level.querySelector(".description_error_3c").classList.remove("hidden");
             return is_valid;
         }
+
+        DOM_level_description.style.backgroundColor = '#FFFFFF';
+        DOM_level.querySelector(".description_error_3c").classList.add("hidden");
+
     }
     if (!level_percentages.includes(0)){
         is_valid = false;
