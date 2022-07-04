@@ -1135,8 +1135,16 @@ function access_new_user_created_quiz(quizz_id){
 }
 
 
-// -------------------------- Main --------------------------
-load_tela_1();
+
+
+
+
+
+
+
+
+
+
 
 
 function edit_current_quizz(quizz_id){
@@ -1368,5 +1376,21 @@ function edit_inputs_tela_3b(object) {
 
     return is_valid;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// -------------------------- Main --------------------------
+load_tela_1();
 
 
