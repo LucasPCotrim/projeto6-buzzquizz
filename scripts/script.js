@@ -425,7 +425,7 @@ function load_tela_3(){
                                     <p class="qtd_perguntas_error hidden error">A quantidade minima de perguntas é 3</p>
                                     
                                     <input type="number" class="qtd_niveis" placeholder="Quantidade de níveis do quizz" required>
-                                    <p class="niveis_error hidden error">A uantidade minima de erros é 2</p>
+                                    <p class="niveis_error hidden error">A quantidade minima de erros é 2</p>
                                 </div>
                                 <button onclick="proceed_to_create_questions()">Prosseguir para criar perguntas</button>
                             </div>
