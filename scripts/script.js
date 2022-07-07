@@ -4,7 +4,7 @@ let selected_quiz_index;
 let current_quiz;
 let user_answers_array = [];
 let current_user_created_quiz;
-const API_server = "https://mock-api.driven.com.br/api/v7/buzzquizz/quizzes";
+const API_server = "https://mock-api.driven.com.br/api/vs/buzzquizz/quizzes";
 
 let DOM_page_content = document.querySelector('.page_content');
 
